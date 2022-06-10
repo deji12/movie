@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'movieapp/links.html' %}
+<body class="body">
+
+<div class="sign section--bg" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650191738/movie/static/img/home/section_odahuy.jpg">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="sign__content">
+					<!-- registration form -->
+					<form action="#" method="POST" class="sign__form">
+						{% csrf_token %}
+						<a href="{% url 'home' %}" class="header__logo">
+							<h1><span style="color: white;">Proton</span><span style="color: #ff55a5;">Tv</span></h1>
+						</a>
+						{% if messages %}
+							{% for message in messages %}
+								<h2 style="color: #ff55a5;">{{message}}</h1>
+							{% endfor %}
+						{% endif %}
+
+						<div class="sign__group">
+							<input type="text" class="sign__input" placeholder="Name" name="name">
+						</div>
+
+						<div class="sign__group">
+							<input type="text" class="sign__input" placeholder="Email" name="email">
+						</div>
+
+						<div class="sign__group">
+							<input type="password" class="sign__input" placeholder="Password" name="pass">
+						</div>
+
+						<div class="sign__group sign__group--checkbox">
+							<input id="remember" name="remember" type="checkbox" checked="checked">
+							<label for="remember">I agree to the <a href="{% url 'privacy' %}">Privacy Policy</a></label>
+						</div>
+						
+						<button class="sign__btn" type="submit">Sign up</button>
+
+						<span class="sign__text">Already have an account? <a href="{% url 'login' %}">Sign in!</a></span>
+					</form>
+					<!-- registration form -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS -->
+
+</body>
+</html>
+

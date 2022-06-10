@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include 'movieapp/links.html' %}
+<body class="body">
+
+<div class="sign section--bg" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650191738/movie/static/img/home/section_odahuy.jpg">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="sign__content">
+					<!-- authorization form -->
+					<form action="#" method="POST" class="sign__form">
+						{% csrf_token %}
+						<a href="{% url 'home' %}" class="header__logo">
+							<h1><span style="color: white;">Proton</span><span style="color: #ff55a5;">Tv</span></h1>
+						</a>
+
+						{% if messages %}
+
+									{% for message in messages %}
+								
+											<div class="col-12">
+												<h4 class="profile__title" style="color: #ff55a5;">{{message}}</h4>
+											</div>
+									
+									{% endfor %}
+								
+								{% endif %}
+
+						<div class="sign__group">
+							<input type="text" class="sign__input" placeholder="Enter your account email" name="email" required>
+						</div>
+
+						<!-- <div class="sign__group sign__group--checkbox">
+							<input id="remember" name="remember" type="checkbox" checked="checked">
+							<label for="remember">I agree to the <a href="privacy.html">Privacy Policy</a></label>
+						</div> -->
+						
+						<button class="sign__btn" type="submit">Reset Password</button>
+
+						<span class="sign__text">Don't have an account? <a href="{% url 'register' %}">Sign up!</a></span>
+
+						<span class="sign__text">Already have an account? <a href="{% url 'login' %}">Sign in!</a></span>
+					</form>
+					<!-- end authorization form -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JS -->
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<meta charset="utf-8">
+{% load static %}
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	 
+	<!-- CSS -->
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183927/movie/static/css/bootstrap-reboot.min_dpjdxt.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183937/movie/static/css/bootstrap-grid.min_evacqn.css">
+	<!-- <link rel="stylesheet" href="{% static 'bootstrap-grid.min.css' %}">
+	<link rel="stylesheet" href="{% static 'bootstrap-reboot.min.css' %}"> -->
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183929/movie/static/css/owl.carousel.min_tuuejg.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183939/movie/static/css/jquery.mCustomScrollbar.min_gnkz9v.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183927/movie/static/css/nouislider.min_vwlenh.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183934/movie/static/css/plyr_tr9hgb.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183928/movie/static/css/photoswipe_ex3v4x.css">
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650183930/movie/static/css/default-skin_aiesm2.css">
+
+	<link rel="stylesheet" href="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650915346/movie/static/css/main_rizahq.css">
+	<!-- <link rel="stylesheet" href="{% static 'main.css' %}"> -->
+	<!-- Favicons -->
+	<link rel="icon" type="image/png" href="https://res.cloudinary.com/dxojb4izx/image/upload/v1650183930/movie/static/icon/favicon-32x32_nheuci.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="https://res.cloudinary.com/dxojb4izx/image/upload/v1650183930/movie/static/icon/favicon-32x32_nheuci.png">
+
+	<meta name="description" content="Online Movies, TV Shows & Cinema HTML Template">
+	<meta name="keywords" content="">
+	<meta name="author" content="Dmitry Volkov">
+	<title>ProtonTv – Online Movies, TV Shows & Cinema HTML Template</title>
+
+<!-- scripts -->
+<!-- <script src="{% static 'jquery.min.js' %}" ></script> -->
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184310/movie/static/js/jquery-3.6.0.min_hals7f.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184310/movie/static/js/jquery-3.6.0.min_hals7f.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184310/movie/static/js/jquery-3.6.0.min_hals7f.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184286/movie/static/js/bootstrap.bundle.min_fvezjt.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184329/movie/static/js/owl.carousel.min_i8jnga.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184311/movie/static/js/jquery.mousewheel.min_q5f0jc.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184312/movie/static/js/jquery.mCustomScrollbar.min_sqg1zb.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184332/movie/static/js/wNumb_uj8h4s.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184317/movie/static/js/nouislider.min_cvdt9i.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184345/movie/static/js/plyr.min_gibrhj.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184311/movie/static/js/jquery.morelines.min_bhkxrd.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184337/movie/static/js/photoswipe.min_a06oxp.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184322/movie/static/js/photoswipe-ui-default.min_macxsd.js"></script>
+<script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184316/movie/static/js/main_bnj6rj.js"></script>
+<!-- <script src="{% static 'main.js' %}"></script> -->
+
+<header class="header">
+	<div class="header__wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="header__content">
+						<!-- header logo -->
+						<a href="{% url 'home' %}" class="header__logo">
+							<h1><span style="color: white;">Proton</span><span style="color: #ff55a5;">Tv</span></h1>
+						</a>
+						<!-- end header logo -->
+
+						<!-- header nav -->
+						<ul class="header__nav">
+							<!-- dropdown -->
+							<!-- <li class="header__nav-item">
+								<a class="dropdown-toggle header__nav-link" href="{% url 'home' %}" role="button" id="dropdownMenuHome" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home </a>
+
+								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuHome">
+									<li><a href="{% url 'home' %}">Home slideshow bg</a></li>
+								
+								</ul>
+							</li> -->
+
+							<li class="header__nav-item">
+								<a href="{% url 'home' %}" class="header__nav-link">Home</a>
+							</li>
+							
+							<!-- end dropdown -->
+
+							<!-- dropdown -->
+							<li class="header__nav-item">
+								<a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuCatalog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Movies <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z"/></svg></a>
+
+								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
+									<li><a href="{% url 'cat1' %}">Movie Grid</a></li>
+									<li><a href="{% url 'cat2' %}">Movie List</a></li>
+									<!-- <li><a href="details1.html">Details Movie</a></li> -->
+									
+								</ul>
+							</li>
+							<!-- end dropdown -->
+
+							<!-- <li class="header__nav-item">
+								<a href="{% url 'pricing' %}" class="header__nav-link">Pricing Plan</a>
+							</li> -->
+
+							<li class="header__nav-item">
+								<a href="{% url 'series' %}" class="header__nav-link">Series</a>
+							</li>
+
+							{% if request.user.is_authenticated %}
+								<li class="header__nav-item">
+									<a href="{% url 'profile' %}" class="header__nav-link">Profile</a>
+								</li>
+							{% endif %}
+
+							<li class="header__nav-item">
+								<a href="{% url 'faq' %}" class="header__nav-link">Help</a>
+							</li>
+
+							<!-- dropdown -->
+							<li class="dropdown header__nav-item">
+								<a class="dropdown-toggle header__nav-link header__nav-link--more" href="#" role="button" id="dropdownMenuMore" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,10a2,2,0,1,0,2,2A2,2,0,0,0,12,10ZM5,10a2,2,0,1,0,2,2A2,2,0,0,0,5,10Zm14,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z"/></svg>
+								</a>
+
+								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
+									<li><a href="{% url 'about' %}">About</a></li>
+									<!-- <li><a href="{% url 'profile' %}">Profile</a></li> -->
+									<!-- <li><a href="{% url 'login' %}">Sign In</a></li>
+									<li><a href="{% url 'register' %}">Sign Up</a></li> -->
+									<!-- <li><a href="{% url 'fp' %}">Forgot password</a></li> -->
+									<!-- <li><a href="{% url 'privacy' %}">Privacy Policy</a></li> -->
+									<li><a href="{% url 'contact' %}">Contact</a></li>
+									<!-- <li><a href="{% url '404' %}">404 Page</a></li> -->
+								</ul>
+							</li>
+							<!-- end dropdown -->
+						</ul>
+						<!-- end header nav -->
+
+						<!-- header auth -->
+						<div class="header__auth">
+							<button class="header__search-btn" aria-label="search btn" type="button">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"/></svg>
+							</button>
+
+							<!-- dropdown -->
+							<div class="dropdown header__lang">
+								<a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuLang" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">EN</a>
+
+								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuLang">
+									<li><a href="#">English</a></li>
+									<li><a href="#">Spanish</a></li>
+									<li><a href="#">Russian</a></li>
+								</ul>
+							</div>
+							<!-- end dropdown -->
+
+							{% if request.user.is_authenticated %}
+								<a href="{% url 'logout' %}" class="header__sign-in">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z"/></svg>
+									<span>sign out</span>
+								</a>
+							{% else %}
+								<a href="{% url 'login' %}" class="header__sign-in">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z"/></svg>
+									<span>sign in</span>
+								</a>
+							{% endif %}
+						</div>
+						<!-- end header auth -->
+
+						<!-- header menu btn -->
+						<button class="header__btn" type="button">
+							<span></span>
+							<span></span>
+							<span></span>
+						</button>
+						<!-- end header menu btn -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- header search -->
+	<form action="{% url 'search' %}" method="POST" class="header__search">
+		{% csrf_token %}
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<div class="header__search-content">
+						<input type="text" name="search" placeholder="I'm looking for..." required>
+						<button type="submit">Search</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!-- end header search -->
+
+    <!-- home bg -->
+	<!-- <div class="owl-carousel home__bg">
+		<div class="item home__cover" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650184330/movie/static/img/home/home__bg_e4ylfv.jpg"></div>
+		<div class="item home__cover" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650184330/movie/static/img/home/home__bg_e4ylfv.jpg"></div>
+		<div class="item home__cover" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650184330/movie/static/img/home/home__bg_e4ylfv.jpg"></div>
+		<div class="item home__cover" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650184330/movie/static/img/home/home__bg_e4ylfv.jpg"></div>
+	</div> -->
+	<!-- end home bg -->
+</header>
