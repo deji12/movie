@@ -80,10 +80,12 @@ def detail(request, name):
             new_review.save()
             return redirect('detail', name=name)
 
+    
 
     mov = movie.objects.get(name=name)
     mov.clicks +=1
     mov.save()
+    pics = photos.objects.filter(movie_name=mov)
     all_movies = movie.objects.all()
     all_coms = comment.objects.filter(movie=mov)
     all_reviews = reviewss.objects.filter(movie=mov)
@@ -94,7 +96,7 @@ def detail(request, name):
         'al': all_movies,
         'coms': all_coms,
         'revs': all_reviews,
-        
+        'pics': pics,
     }
     return render(request, 'movieapp/details1.html', context)
 

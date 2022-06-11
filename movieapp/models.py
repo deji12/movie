@@ -86,11 +86,12 @@ class series(models.Model):
         return str(self.name)
 
 class photos(models.Model):
-    series_name = models.ForeignKey(series, on_delete=models.CASCADE)
+    series_name = models.ForeignKey(series, on_delete=models.CASCADE, null=True, blank=True)
+    movie_name = models.ForeignKey(movie, on_delete=models.CASCADE, null=True, blank=True)
     pic = models.FileField(upload_to='movie-photos')
 
     def __str__(self):
-        return str(self.series_name)
+        return str(self.movie_name)
 
 class season(models.Model):
     series_name = models.ForeignKey(series, related_name='season_val', on_delete=models.CASCADE)
