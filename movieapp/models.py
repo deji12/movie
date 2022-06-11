@@ -23,7 +23,7 @@ class year(models.Model):
 class movie(models.Model):
     name = models.CharField(max_length=20000)
     info = models.TextField()
-    video = models.FileField(upload_to='film/')
+    video = models.CharField(max_length=10000, null=True, blank=True)
     thumbnail = models.FileField(upload_to='thumb/')
     age = models.CharField(default=13, max_length=20)
     cat = models.CharField(default='cartoon', max_length=200)
