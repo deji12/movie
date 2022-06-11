@@ -391,7 +391,7 @@
 					<!-- card -->
 					{% for i in al %}
 						{% if i.draft != True %}
-							{% if i.name != movie.name %}
+							{% if i.genre1 != movie.genre1 %}
 							<div class="col-6 col-sm-4 col-lg-6">
 								<div class="card">
 									<a href="{% url 'detail' i.name %}" class="card__cover">
@@ -416,7 +416,7 @@
 
 					{% for i in al2 %}
 						{% if i.draft != True %}
-							{% if i.name != movie.name %}
+							{% if i.genre2 != movie.genre2 %}
 							<div class="col-6 col-sm-4 col-lg-6">
 								<div class="card">
 									<a href="{% url 'detail' i.name %}" class="card__cover">
@@ -441,7 +441,7 @@
 
 					{% for i in series %}
 						{% if i.draft != True %}
-							{% if i.name != movie.name %}
+							{% if i.genre1 != movie.genre1 %}
 							<div class="col-6 col-sm-4 col-lg-6">
 								<div class="card">
 									<a href="{% url 'detail' i.name %}" class="card__cover">
@@ -466,7 +466,7 @@
 
 					{% for i in series2 %}
 						{% if i.draft != True %}
-							{% if i.name != movie.name %}
+							{% if i.genre2 != movie.genre2 %}
 							<div class="col-6 col-sm-4 col-lg-6">
 								<div class="card">
 									<a href="{% url 'detail' i.name %}" class="card__cover">

@@ -71,11 +71,11 @@
 					<source src="{{se.video}}" type="video/mp4" size="1440">
 
 					<!-- Caption files -->
-					<track kind="captions" label="English" srclang="en" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default="">
-					<track kind="captions" label="Français" srclang="fr" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+					<!-- <track kind="captions" label="English" srclang="en" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default="">
+					<track kind="captions" label="Français" srclang="fr" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"> -->
 
 					<!-- Fallback for browsers that don't support the <video> element -->
-					<a href="../../../static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download="">Download</a>
+					<a href="{{se.video}}" download="">Download</a>
 				</track></track></video>
 			</div>
 			<!-- end player -->
@@ -88,7 +88,7 @@
 						<div class="card-header" id="{{i.heading}}">
 							<button type="button" data-toggle="collapse" data-target="#{{i.collapse}}" aria-expanded="true" aria-controls="{{i.collapse}}">
 								<span>Season: {{i.season_num}}</span>
-								<span>{{epi}} Episodes from Nov, 2020 until May, 2021</span>
+								<span>{{epi}} Total Episodes of {{series.name}}</span>
 							</button>
 						</div>
 
@@ -592,6 +592,7 @@
 					<!-- card -->
                     {% for j in dis %}
                         {% if j.draft != True %}
+						{% if j.name != series.name %}
                             <div class="col-6 col-sm-4 col-lg-6">
                                 <div class="card">
                                     <a href="{% url 'series-detail' j.name %}" class="card__cover">
@@ -610,6 +611,82 @@
                                     </div>
                                 </div>
                             </div>
+						{% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+					{% for j in dis2 %}
+                        {% if j.draft != True %}
+						{% if j.name != series.name %}
+                            <div class="col-6 col-sm-4 col-lg-6">
+                                <div class="card">
+                                    <a href="{% url 'series-detail' j.name %}" class="card__cover">
+                                        <img src="{{j.thumbnail.url}}" alt="">
+                                        <span class="card__play">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"></path></svg>
+                                        </span>
+                                    </a>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">{{j.name}}</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">{{j.genre1}}</a>
+                                            <a href="#">{{j.genre2}}</a>
+                                        </span>
+                                        <span class="card__rate">{{j.rating}}</span>
+                                    </div>
+                                </div>
+                            </div>
+						{% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+					{% for j in dis3 %}
+                        {% if j.draft != True %}
+						{% if j.name != series.name %}
+                            <div class="col-6 col-sm-4 col-lg-6">
+                                <div class="card">
+                                    <a href="{% url 'series-detail' j.name %}" class="card__cover">
+                                        <img src="{{j.thumbnail.url}}" alt="">
+                                        <span class="card__play">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"></path></svg>
+                                        </span>
+                                    </a>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">{{j.name}}</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">{{j.genre1}}</a>
+                                            <a href="#">{{j.genre2}}</a>
+                                        </span>
+                                        <span class="card__rate">{{j.rating}}</span>
+                                    </div>
+                                </div>
+                            </div>
+						{% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+					{% for j in dis4 %}
+                        {% if j.draft != True %}
+						{% if j.name != series.name %}
+                            <div class="col-6 col-sm-4 col-lg-6">
+                                <div class="card">
+                                    <a href="{% url 'series-detail' j.name %}" class="card__cover">
+                                        <img src="{{j.thumbnail.url}}" alt="">
+                                        <span class="card__play">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><path d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z"></path></svg>
+                                        </span>
+                                    </a>
+                                    <div class="card__content">
+                                        <h3 class="card__title"><a href="#">{{j.name}}</a></h3>
+                                        <span class="card__category">
+                                            <a href="#">{{j.genre1}}</a>
+                                            <a href="#">{{j.genre2}}</a>
+                                        </span>
+                                        <span class="card__rate">{{j.rating}}</span>
+                                    </div>
+                                </div>
+                            </div>
+						{% endif %}
                         {% endif %}
                     {% endfor %}
 					<!-- end card -->
