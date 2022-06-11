@@ -667,7 +667,7 @@ def series_detail_epi(request, name, seasons ,epi):
             rate = request.POST.get('rate')
 
             if rev:
-                new_epi_review = episode_review(name=request.user, body=msg, title=rev, rate=rate)
+                new_epi_review = er(name=request.user, body=msg, title=rev, rate=rate)
                 new_epi_review.series_name = get_series_for_episode
                 new_epi_review.episode = episode.objects.get(title=epi, series_name=get_series_for_episode)
                 new_epi_review.save()
@@ -682,7 +682,7 @@ def series_detail_epi(request, name, seasons ,epi):
 
     
     get_episode_comments = episode_comment.objects.filter(episode = epis, series_name=get_series_for_episode)
-    get_episode_reviews = episode_review.objects.filter(episode = epis, series_name=get_series_for_episode)
+    get_episode_reviews = er.objects.filter(episode = epis, series_name=get_series_for_episode)
 
     fi = 0
     for i in get_episodes:
