@@ -84,7 +84,10 @@ def detail(request, name):
     mov = movie.objects.get(name=name)
     mov.clicks +=1
     mov.save()
-    all_movies = movie.objects.all()
+    all_movies = movie.objects.filter(genre1=mov.genre1)[:2]
+    all_movies2 = movie.objects.filter(genre2=mov.genre2)[:2]
+    all_series = series.objects.filter(genre1=mov.genre1)[:2]
+    all_series2 = series.objects.filter(genre2=mov.genre2)[:2]
     all_coms = comment.objects.filter(movie=mov)
     all_reviews = reviewss.objects.filter(movie=mov)
     get_movie = movie.objects.get(name=name)
@@ -92,9 +95,11 @@ def detail(request, name):
     context = {
         'movie': get_movie,
         'al': all_movies,
+        'al2': all_movies2,
         'coms': all_coms,
         'revs': all_reviews,
-        
+        'series': all_series,
+        'series2': all_series2,
     }
     return render(request, 'movieapp/details1.html', context)
 
