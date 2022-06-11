@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% include 'movieapp/nav.html' %}
 <body class="body">
 
@@ -44,7 +45,7 @@
 							</div>
 							<div class="profile__meta">
 								<h3>Username</h3>
-								<span>{{request.user.username}}</span>
+								<span id="username-change">{{request.user.username}}</span>
 							</div>
 						</div>
 
@@ -107,7 +108,7 @@
 					<div class="col-12 col-sm-6 col-xl-3">
 						<div class="stats">
 							<span>Premium plan</span>
-							<p>$19.99</p>
+							<p>$0.00</p>
 							<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1650183944/movie/static/img/credit-card_xwkwqr.svg" alt="">
 						</div>
 					</div>
@@ -116,8 +117,8 @@
 					<!-- stats -->
 					<div class="col-12 col-sm-6 col-xl-3">
 						<div class="stats">
-							<span>Films watched</span>
-							<p>1 172</p>
+							<span>Films and Series</span>
+							<p>{{num_con}}</p>
 							<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1650183956/movie/static/img/film_lbeaoq.svg" alt="">
 						</div>
 					</div>
@@ -148,10 +149,9 @@
 						<div class="dashbox">
 							<div class="dashbox__title">
 								<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1650183956/movie/static/img/film_lbeaoq.svg" alt=""> Movies for you</h3>
-
 								<div class="dashbox__wrap">
 									<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
-									<a class="dashbox__more" href="catalog.html">View All</a>
+									<a class="dashbox__more" href="{% url 'home' %}">View All</a>
 								</div>
 							</div>
 
@@ -166,7 +166,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for i in for_you %}
+										{% for i in for_you_series %}
 										<tr>
 											<td>
 												<div class="main__table-text">{{i.id}}</div>
@@ -175,10 +175,26 @@
 												<div class="main__table-text"><a href="{% url 'detail' i.name %}">{{i.name}}</a></div>
 											</td>
 											<td>
-												<div class="main__table-text">Movie</div>
+												<div class="main__table-text">Series</div>
 											</td>
 											<td>
 												<div class="main__table-text main__table-text--rate">{{i.rating}}</div>
+											</td>
+										</tr>
+										{% endfor %}
+										{% for j in for_you_movie %}
+										<tr>
+											<td>
+												<div class="main__table-text">{{j.id}}</div>
+											</td>
+											<td>
+												<div class="main__table-text"><a href="{% url 'detail' j.name %}">{{j.name}}</a></div>
+											</td>
+											<td>
+												<div class="main__table-text">Movie</div>
+											</td>
+											<td>
+												<div class="main__table-text main__table-text--rate">{{j.rating}}</div>
 											</td>
 										</tr>
 										{% endfor %}
@@ -197,7 +213,7 @@
 
 								<div class="dashbox__wrap">
 									<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
-									<a class="dashbox__more" href="reviews.html">View All</a>
+									<a class="dashbox__more" href="{% url 'series' %}">View All</a>
 								</div>
 							</div>
 
@@ -212,13 +228,13 @@
 										</tr>
 									</thead>
 									<tbody>
-										{% for i in revs %}
+										{% for i in episode_review %}
 											<tr>
 												<td>
 													<div class="main__table-text">{{i.id }}</div>
 												</td>
 												<td>
-													<div class="main__table-text"><a href="{% url 'detail' i.movie %}">{{i.movie}}</a></div>
+													<div class="main__table-text"><a href="{% url 'series-detail' i.series_name %}">{{i.series_name}}</a></div>
 												</td>
 												<td>
 													<div class="main__table-text">{{i.name}}</div>
@@ -256,7 +272,7 @@
 					<!-- price -->
 					<div class="col-12 order-md-3 col-lg-4 order-lg-2">
 						<div class="price price--profile price--premium">
-							<div class="price__item price__item--first"><span>Premium</span> <span>$19.99</span></div>
+							<div class="price__item price__item--first"><span>Premium</span> <span>$0.00</span></div>
 							<div class="price__item"><span>1 Month</span></div>
 							<div class="price__item"><span>Full HD</span></div>
 							<div class="price__item"><span>Lifetime Availability</span></div>
@@ -270,7 +286,7 @@
 					<!-- price -->
 					<div class="col-12 col-md-6 order-md-2 col-lg-4 order-lg-3">
 						<div class="price price--profile">
-							<div class="price__item price__item--first"><span>Cinematic</span> <span>$39.99</span></div>
+							<div class="price__item price__item--first"><span>Cinematic</span> <span>$0.00</span></div>
 							<div class="price__item"><span>2 Months</span></div>
 							<div class="price__item"><span>Ultra HD</span></div>
 							<div class="price__item"><span>Lifetime Availability</span></div>
@@ -287,24 +303,20 @@
 				<div class="row row--grid">
 					<!-- details form -->
 					<div class="col-12 col-lg-6">
-						<form action="#" method="POST" class="profile__form">
+						<form action="#" method="POST" class="profile__form" id="profile-form">
 							{% csrf_token %}
 							<div class="row">
 								<div class="col-12">
 									<h4 class="profile__title">Profile details</h4>
 								</div>
 
-								{% if messages %}
-
-									{% for message in messages %}
+					
 								
 											<div class="col-12">
-												<h4 class="profile__title" style="color: dodgerblue;">{{message}}</h4>
+												<h4 id="success" class="profile__title" style="color: dodgerblue;">{{message}}</h4>
 											</div>
 									
-									{% endfor %}
-								
-								{% endif %}
+									
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
@@ -322,7 +334,7 @@
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
-										<label class="profile__label" for="firstname">Name</label>
+										<label class="profile__label" for="firstname">First & Last Names</label>
 										<input id="firstname" type="text" name="name" class="profile__input" placeholder="John Doe">
 									</div>
 								</div>
@@ -335,33 +347,34 @@
 								</div> -->
 
 								<div class="col-12">
-									<button class="profile__btn" type="submit">Save</button>
+									<button class="profile__btn" onclick="change()" type="submit">Save</button>
 								</div>
 							</div>
 						</form>
+						<script>
+							function change () {
+								document.getElementById('username-change').innerhtml = document.getElementById('username').value
+							}
+						</script>
 					</div>
 					<!-- end details form -->
 
 					<!-- password form -->
 					<div class="col-12 col-lg-6">
-						<form action="#" method="POST" class="profile__form">
+						<form action="#" method="POST" class="profile__form" id="password-form">
 							{% csrf_token %}
 							<div class="row">
 								<div class="col-12">
 									<h4 class="profile__title">Change password</h4>
 								</div>
 
-								{% if messages %}
-
-									{% for message in messages %}
+				
 									
 											<div class="col-12">
-												<h4 class="profile__title" style="color: dodgerblue;">{{message}}</h4>
+												<h4 id="success2" class="profile__title" style="color: dodgerblue;">{{message}}</h4>
 											</div>
 									
-									{% endfor %}
-								
-								{% endif %}
+									
 
 								<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 									<div class="profile__group">
@@ -404,6 +417,50 @@
 <!-- end footer -->
 
 <!-- JS -->
+
+<script>
+	$(document).on('submit', '#profile-form', function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'POST',
+			url: "{% url 'profile' %}",
+			data: {
+				username: $('#username').val(),
+				email: $('#email').val(),
+				name: $('#firstname').val(),
+				csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+			},
+			success: function (data) {
+				$('#success').html(data)
+			},
+		})
+	})
+</script>
+
+
+<script>
+	$(document).on('submit', '#password-form', function (e) {
+		e.preventDefault();
+		$.ajax({
+			type: 'POST',
+			url: "{% url 'profile' %}",
+			data: {
+				oldpass: $('#oldpass').val(),
+				newpass: $('#newpass').val(),
+				confirm: $('#confirmpass').val(),
+				csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+			},
+			success: function (data) {
+				$('#success2').html(data)
+			},
+		})
+	
+        setTimeout(function(){
+            window.location.href = '{% url "login" %}';
+        }, 10000);
+    
+	})
+</script>
 
 </body>
 </html>

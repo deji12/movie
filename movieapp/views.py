@@ -7,11 +7,12 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import comment, reviewss, Category, rate, year, episode, season, series_comment, episode_review, episode_comment, photos
+from .models import comment, reviewss, Category, rate, year, episode, season, series_comment, episode_review as er, episode_comment, photos
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.http import HttpResponse
 # Create your views here.
 
 import requests
@@ -34,11 +35,13 @@ def home(request):
     get_series = series.objects.all()
     get_cartoons = movie.objects.filter(cat='cartoon')
     get_premier = movie.objects.filter(premier=True)
+    get_premier_series = series.objects.filter(premier=True)
     context = {
         'movie': get_movies,
         'series': get_series,
         'cartoon': get_cartoons,
         'premier': get_premier,
+        'series_premier': get_premier_series,
     }
     return render(request, 'movieapp/index.html', context)
 
@@ -107,7 +110,7 @@ def catalog_grid(request):
         yearr = request.POST.get('year')
 
         check_genre = Category.objects.filter(cat=gen)
-        fin = NULL
+        fin = None
 
         # FILTER FOR GENRE AND DATE
         if gen:
@@ -191,7 +194,7 @@ def catalog_list(request):
         yearr = request.POST.get('year')
 
         check_genre = Category.objects.filter(cat=gen)
-        fin = NULL
+        fin = None
 
         # FILTER FOR GENRE AND DATE
         if gen:
@@ -275,7 +278,7 @@ def Series(request):
         yearr = request.POST.get('year')
 
         check_genre = Category.objects.filter(cat=gen)
-        fin = NULL
+        fin = None
 
           # FILTER FOR GENRE AND DATE
         if gen:
@@ -358,8 +361,16 @@ def faq(request):
 def about(request):
     return render(request, 'movieapp/about.html', {})
 
+@login_required
 def profile(request):
     my_user = User.objects.get(username=request.user)
+    all_movies = movie.objects.all()
+    all_series = series.objects.all()
+    final = 0
+    for i in all_movies:
+        final+=1
+    for j in all_series:
+        final+=1
     # update profile
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -367,7 +378,7 @@ def profile(request):
         name = request.POST.get('name')
         oldpass = request.POST.get('oldpass')
         newpass = request.POST.get('newpass')
-        confirm = request.POST.get('confirmpass')
+        confirm = request.POST.get('confirm')
 
         if oldpass:
             auth_user = authenticate(username=request.user.username,  password=oldpass)
@@ -376,33 +387,28 @@ def profile(request):
                     my_user.set_password(confirm)
                     my_user.save()
                     logout(request)
-                    messages.success(request, 'Password updated successfully! Login Again!')
-                    return redirect('login')
+                    return HttpResponse( 'Password updated successfully!. You will be redirected to the login page in a few seconds')
                 else:
-                    messages.error(request, 'New & confirm password do not match!')
-                    return redirect('profile')
+                    return HttpResponse('New & confirm password do not match!')
             else:
-                messages.error(request, 'Wrong details or user does not exist!')
-                return redirect('profile')
+                return HttpResponse('Wrong details or user does not exist!')
 
         if username:
             my_user.username = username
             my_user.save()
-            messages.success(request, 'Profile successfully updated')
-            return redirect('profile')
+            
         if email:
             my_user.email = email
             my_user.save()
-            messages.success(request, 'Profile successfully updated')
-            return redirect('profile')
+            
         if name:
             fname = name.split()[0]
             lname = name.split()[1]
             my_user.first_name = fname
             my_user.last_name = lname
             my_user.save()
-            messages.success(request, 'Profile successfully updated')
-            return redirect('profile')
+            
+        return HttpResponse('Profile successfully updated')
 
     #movie & series comments
     get_comments_by_user = comment.objects.filter(name=request.user)
@@ -424,15 +430,21 @@ def profile(request):
 
     #get latest reviews
     get_reviews = reviewss.objects.filter(name=request.user)
+    episode_review = er.objects.all().order_by('-date')[:5]
+
 
     #order movies by clicks
-    for_you = movie.objects.all().order_by('-clicks')[:5]
+    for_you = series.objects.all().order_by('-clicks')[:4]
+    for_you_movie = movie.objects.all().order_by('-clicks')[:4]
 
     context = {
         'num_comment': number_of_comments,
         'num_review': number_of_reviews,
         'revs': get_reviews,
-        'for_you': for_you,
+        'for_you_series': for_you,
+        'for_you_movie': for_you_movie,
+        'episode_review': episode_review,
+        'num_con': final,
     }
     return render(request, 'movieapp/profile.html', context)
 
@@ -611,6 +623,9 @@ def series_detail(request, name):
     fi = 0
     for i in get_episodes:
         fi+=1
+    
+    get_series.clicks +=1
+    get_series.save()
 
     series_genre = get_series.genre2
     

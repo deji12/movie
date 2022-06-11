@@ -80,6 +80,7 @@ class series(models.Model):
     year = models.CharField(max_length=100)
     country = models.CharField(max_length=200)
     draft = models.BooleanField(default=False)
+    clicks = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return str(self.name)

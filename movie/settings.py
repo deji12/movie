@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'movieapp',
     'cloudinary',
     'cloudinary_storage',
+    'tracking',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'tracking.middleware.VisitorTrackingMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -144,3 +146,11 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 django_heroku.settings(locals())
+
+TRACK_PAGEVIEWS = True
+TRACK_ANONYMOUS_USERS = True
+TRACK_SUPERUSERS = True
+
+import django 
+from django.utils.encoding import smart_str 
+django.utils.encoding.smart_text = smart_str
