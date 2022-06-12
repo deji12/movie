@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import comment, reviewss, Category, rate, year, episode, season, series_comment, episode_review as er, episode_comment, photos
+from .models import comment, reviewss, Category, rate, year, episode, season, series_comment, episode_review as er, episode_comment, photos, Profile
 from django.views.decorators.csrf import csrf_exempt,csrf_protect
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
@@ -64,23 +64,30 @@ def searchresult(request):
 
 def detail(request, name):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        review = request.POST.get('review')
-        text = request.POST.get('body')
-        rate = request.POST.get('rate')
+        if request.user.is_authenticated:
+            get_profile = Profile.objects.get(user=request.user)
+            title = request.POST.get('title')
+            review = request.POST.get('review')
+            text = request.POST.get('body')
+            rate = request.POST.get('rate')
 
-        if text:
-            new_comment = comment(name=request.user, body=text)
-            new_comment.movie = movie.objects.get(name=name)
-            new_comment.save()
-            return redirect('detail', name=name)
-        if title:
-            new_review = reviewss(name=request.user, title=title, body=review, rate=rate)
-            new_review.movie = movie.objects.get(name=name)
-            new_review.save()
-            return redirect('detail', name=name)
-
-    
+            if text:
+                new_comment = comment(name=request.user, body=text)
+                new_comment.movie = movie.objects.get(name=name)
+                new_comment.save()
+                get_profile.comments +=1
+                get_profile.save()
+                return redirect('detail', name=name)
+            if title:
+                new_review = reviewss(name=request.user, title=title, body=review, rate=rate)
+                new_review.movie = movie.objects.get(name=name)
+                get_profile.reviews +=1
+                get_profile.save()
+                new_review.save()
+                return redirect('detail', name=name)
+        else:
+            messages.error(request, 'Please signin to post a comment or review')
+            return redirect('detail', name=name)    
 
     mov = movie.objects.get(name=name)
     mov.clicks +=1
@@ -513,11 +520,24 @@ def signup(request):
             messages.error(request, 'Email already exists.')
             return redirect('register')
 
-        new_user = User.objects.create(username=name, email=email, password=password)
-        new_user.save()
+        try:
+            first_name = name.split()[0]
+            last_name = name.split()[1]
 
-        messages.success(request, 'User successfully created. Login')
-        return redirect('login')
+            new_user = User.objects.create(username=name, email=email, password=password)
+            new_user.first_name=first_name
+            new_user.last_name  = last_name
+            new_user.save()
+
+            new_profile = Profile(user=new_user, email=email, user_name=first_name)
+            new_profile.save()
+
+            messages.success(request, 'User successfully created. Login')
+            return redirect('login')
+        except:
+            messages.success(request, 'Enter first & last names')
+            return redirect('register')
+
 
     return render(request, 'movieapp/signup.html', {})
 
@@ -671,6 +691,7 @@ def series_detail_epi(request, name, seasons ,epi):
 
     if request.method == 'POST':
         if request.user.is_authenticated:
+            get_profile = Profile.objects.get(user=request.user)
             com = request.POST.get('text')
             rev = request.POST.get('review')
             msg = request.POST.get('msg')
@@ -681,11 +702,15 @@ def series_detail_epi(request, name, seasons ,epi):
                 new_epi_review.series_name = get_series_for_episode
                 new_epi_review.episode = episode.objects.get(title=epi, series_name=get_series_for_episode)
                 new_epi_review.save()
+                get_profile.reviews +=1
+                get_profile.save()
             elif com:
                 new_epi_comment = episode_comment(name=request.user, body=com)
                 new_epi_comment.series_name = get_series_for_episode
                 new_epi_comment.episode = episode.objects.get(title=epi, series_name=get_series_for_episode)
                 new_epi_comment.save()
+                get_profile.comments +=1
+                get_profile.save()
         else:
             messages.error(request, 'Please signin to post a comment or review')
             return redirect('series-detail-epi', name=name, seasons=seasons, epi=epi)

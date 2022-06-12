@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('movieapp.urls')),
     # path('tracking/', include('tracking.urls'))
+    path('', include('dashboard.urls')),
 ]

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     # 'tracking',
+    'dashboard',
 ]
 
 MIDDLEWARE = [

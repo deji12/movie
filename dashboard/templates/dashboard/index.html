@@ -1,0 +1,349 @@
+{% include 'dashboard/links.html' %}
+
+<!-- main content -->
+<main class="main">
+	<div class="container-fluid">
+		<div class="row">
+			<!-- main title -->
+			<div class="col-12">
+				<div class="main__title">
+					<h2>Dashboard</h2>
+
+					<a href="{% url 'add-item' %}" class="main__title-link">add item</a>
+				</div>
+			</div>
+			<!-- end main title -->
+		</div>
+
+		<div class="row row--grid">
+			<!-- stats -->
+			<div class="col-12 col-sm-6 col-xl-3">
+				<div class="stats">
+					<span>Unique views this month</span>
+					<p>5 678</p>
+					<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/graph-bar_u15i2r.svg" alt="">
+				</div>
+			</div>
+			<!-- end stats -->
+
+			<!-- stats -->
+			<div class="col-12 col-sm-6 col-xl-3">
+				<div class="stats">
+					<span>Items added this month</span>
+					<p>172</p>
+					<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/film_exwmgs.svg" alt="">
+				</div>
+			</div>
+			<!-- end stats -->
+
+			<!-- stats -->
+			<div class="col-12 col-sm-6 col-xl-3">
+				<div class="stats">
+					<span>Number of comments</span>
+					<p>{{total_comments}}</p>
+					<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965331/movie/static/dashboard/img/comments_ttr0gt.svg" alt="">
+				</div>
+			</div>
+			<!-- end stats -->
+
+			<!-- stats -->
+			<div class="col-12 col-sm-6 col-xl-3">
+				<div class="stats">
+					<span>Number of reviews</span>
+					<p>{{total_reviews}}</p>
+					<img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965333/movie/static/dashboard/img/star-half-alt_o6jl8n.svg" alt="">
+				</div>
+			</div>
+			<!-- end stats -->
+
+			<!-- dashbox -->
+			<div class="col-12 col-xl-6">
+				<div class="dashbox">
+					<div class="dashbox__title">
+						<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/award_xh2z8t.svg" alt=""> Top Movies</h3>
+
+						<div class="dashbox__wrap">
+							<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+							<a class="dashbox__more" href="{% url 'home' %}">View All</a>
+						</div>
+					</div>
+
+					<div class="dashbox__table-wrap">
+						<table class="main__table main__table--dash">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>TITLE</th>
+									<th>CATEGORY</th>
+									<th>RATING</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in movies %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text"><a href="{% url 'detail' i.name %}" style="color: white;">{{i.name}}</a></div>
+									</td>
+									<td>
+										<div class="main__table-text">Movie</div>
+									</td>
+									<td>
+										<div class="main__table-text main__table-text--rate">{{i.rating}}</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- end dashbox -->
+
+						<!-- dashbox -->
+						<div class="col-12 col-xl-6">
+							<div class="dashbox">
+								<div class="dashbox__title">
+									<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/award_xh2z8t.svg" alt=""> Top Series</h3>
+			
+									<div class="dashbox__wrap">
+										<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+										<a class="dashbox__more" href="{% url 'series' %}">View All</a>
+									</div>
+								</div>
+			
+								<div class="dashbox__table-wrap">
+									<table class="main__table main__table--dash">
+										<thead>
+											<tr>
+												<th>ID</th>
+												<th>TITLE</th>
+												<th>CATEGORY</th>
+												<th>RATING</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for i in series %}
+											<tr>
+												<td>
+													<div class="main__table-text">{{i.id}}</div>
+												</td>
+												<td>
+													<div class="main__table-text"><a href="{% url 'series-detail' i.name %}" style="color: white;">{{i.name}}</a></div>
+												</td>
+												<td>
+													<div class="main__table-text">Tv Series</div>
+												</td>
+												<td>
+													<div class="main__table-text main__table-text--rate">{{i.rating}}</div>
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- end dashbox -->
+
+			<!-- dashbox -->
+			<div class="col-12 col-xl-6">
+				<div class="dashbox">
+					<div class="dashbox__title">
+						<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/film_exwmgs.svg" alt=""> Newest Movies</h3>
+
+						<div class="dashbox__wrap">
+							<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+							<a class="dashbox__more" href="{% url 'home' %}">View All</a>
+						</div>
+					</div>
+
+					<div class="dashbox__table-wrap">
+						<table class="main__table main__table--dash">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>TITLE</th>
+									<th>CATEGORY</th>
+									<th>STATUS</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in new_movies %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text"><a href="{% url 'detail' i.name %}" style="color: white;">{{i.name}}</a></div>
+									</td>
+									<td>
+										<div class="main__table-text">Movie</div>
+									</td>
+									<td>
+										{% if i.draft != True %}
+											<div class="main__table-text main__table-text--green">Visible</div>
+										{% else %}
+											<div class="main__table-text main__table-text--red">Draft</div>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- end dashbox -->
+
+			<!-- dashbox -->
+			<div class="col-12 col-xl-6">
+				<div class="dashbox">
+					<div class="dashbox__title">
+						<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965332/movie/static/dashboard/img/film_exwmgs.svg" alt=""> Newest Series</h3>
+
+						<div class="dashbox__wrap">
+							<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+							<a class="dashbox__more" href="{% url 'series' %}">View All</a>
+						</div>
+					</div>
+
+					<div class="dashbox__table-wrap">
+						<table class="main__table main__table--dash">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>TITLE</th>
+									<th>CATEGORY</th>
+									<th>STATUS</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in new_series %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text"><a href="{% url 'series-detail' i.name %}" style="color: white;">{{i.name}}</a></div>
+									</td>
+									<td>
+										<div class="main__table-text">Series</div>
+									</td>
+									<td>
+										{% if i.draft != True %}
+											<div class="main__table-text main__table-text--green">Visible</div>
+										{% else %}
+											<div class="main__table-text main__table-text--red">Draft</div>
+										{% endif %}
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- end dashbox -->
+
+			<!-- dashbox -->
+			<div class="col-12 col-xl-6">
+				<div class="dashbox">
+					<div class="dashbox__title">
+						<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965334/movie/static/dashboard/img/user-circle_oijzuj.svg" alt=""> Newest users</h3>
+
+						<div class="dashbox__wrap">
+							<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+							<a class="dashbox__more" href="{% url 'home' %}">View All</a>
+						</div>
+					</div>
+
+					<div class="dashbox__table-wrap">
+						<table class="main__table main__table--dash">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>FULL NAME</th>
+									<th>EMAIL</th>
+									<th>USERNAME</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in users %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.first_name}} {{i.last_name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text main__table-text--grey">{{i.email}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.username}}</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- end dashbox -->
+
+			<!-- dashbox -->
+			<div class="col-12 col-xl-6">
+				<div class="dashbox">
+					<div class="dashbox__title">
+						<h3><img src="https://res.cloudinary.com/dxojb4izx/image/upload/v1654965331/movie/static/dashboard/img/comments_ttr0gt.svg" alt=""> Newest reviews</h3>
+
+						<div class="dashbox__wrap">
+							<a class="dashbox__refresh" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"/></svg></a>
+							<a class="dashbox__more" href="{% url 'series' %}">View All</a>
+						</div>
+					</div>
+
+					<div class="dashbox__table-wrap">
+						<table class="main__table main__table--dash">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>ITEM</th>
+									<th>AUTHOR</th>
+									<th>RATING</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for i in new_review %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.series_name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text main__table-text--rate">{{i.rate}}</div>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!-- end dashbox -->
+		</div>
+	</div>
+</main>
+<!-- end main content -->
+
+
+</body>
+</html>
