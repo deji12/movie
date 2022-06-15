@@ -78,17 +78,23 @@ def Comments(request):
 
 def DeleteCommentSeries(request, name, title, series_name, comment_content, email):
     get_user = User.objects.get(username=name)
+    get_profile = Profile.objects.get(user=get_user)
     get_series = series.objects.get(name=series_name)
     get_episode = episode.objects.get(title=title, series_name=get_series)
     get_episode_comment = episode_comment.objects.get(name=get_user, episode=get_episode, series_name=get_series, body=comment_content)
     get_episode_comment.delete()
+    get_profile.comments -=1
+    get_profile.save()
     return redirect('comments')
 
 def DeleteCommentMovies(request, name, movie_name, body):
     get_user = User.objects.get(username=name)
+    get_profile = Profile.objects.get(user=get_user)
     get_movie = movie.objects.get(name=movie_name)
     get_movie  = comment.objects.get(name=get_user, movie=get_movie,  body=body)
     get_movie.delete()
+    get_profile.comments -=1
+    get_profile.save()
     return redirect('comments')
 
 def Reviews(request):
@@ -109,17 +115,23 @@ def Reviews(request):
 
 def DeleteReviewMovies(request, name, movie_name, body):
     get_user = User.objects.get(username=name)
+    get_profile = Profile.objects.get(user=get_user)
     get_movie = movie.objects.get(name=movie_name)
     get_movie  = reviewss.objects.get(name=get_user, movie=get_movie, body=body)
     get_movie.delete()
+    get_profile.reviews -=1
+    get_profile.save()
     return redirect('reviews')
 
 def DeleteReviewSeries(request, name, title, series_name, comment_content):
     get_user = User.objects.get(username=name)
+    get_profile = Profile.objects.get(user=get_user)
     get_series = series.objects.get(name=series_name)
     get_episode = episode.objects.get(title=title, series_name=get_series)
     get_episode_comment = episode_review.objects.get(name=get_user, episode=get_episode, series_name=get_series, body=comment_content)
     get_episode_comment.delete()
+    get_profile.reviews -=1
+    get_profile.save()
     return redirect('reviews')
 
 def NotFound(request):
@@ -168,9 +180,9 @@ def EditUser(request, email):
         user_reviews+=1
 
     all_reviews = 0
-    for i in all_movie_review:
+    for i in all_series_review:
         all_reviews+=1
-    for i in all_movie_review:
+    for i in all_series_review:
         all_reviews+=1
 
     context = {
@@ -298,22 +310,93 @@ def ChangePassword(request, email):
 def search(request):
     if request.method == 'POST':
         search_val = request.POST.get('search')
-        filter_movie_for_search = movie.objects.filter(name__icontains=search_val)
-        filter_series_for_search = series.objects.filter(name__icontains=search_val)
-        print(filter_series_for_search)
-        print(filter_movie_for_search)
+        user_search = request.POST.get('search-user')
+        print(user_search)
+        if user_search:
+            if '@' in user_search:
+                search_for_user_by_email = Profile.objects.filter(email=user_search)
+                print(search_for_user_by_email)
+                context = {
+                    'all_users': search_for_user_by_email,
+                    'search': user_search,
+                }
+                return render(request, 'dashboard/users.html', context)
 
-        final = 0
-        for i in filter_movie_for_search:
-            final+=1
-        for i in filter_series_for_search:
-            final+=1
+            else:
+                search_for_user_by_username = Profile.objects.filter(user_name=user_search)
+                print(search_for_user_by_username)
+                context = {
+                    'all_users': search_for_user_by_username,
+                    'search': user_search,
+                }
+                return render(request, 'dashboard/users.html', context)
 
-        context = {
-            'movie_result': filter_movie_for_search,
-            'series_result': filter_series_for_search,
-            'search': search_val,
-            'final': final,
-        }
-        return render(request, 'dashboard/search.html', context)
-        
+        if search_val:
+            filter_movie_for_search = movie.objects.filter(name__icontains=search_val)
+            filter_series_for_search = series.objects.filter(name__icontains=search_val)
+
+            final = 0
+            for i in filter_movie_for_search:
+                final+=1
+            for i in filter_series_for_search:
+                final+=1
+
+            context = {
+                'movie_result': filter_movie_for_search,
+                'series_result': filter_series_for_search,
+                'search': search_val,
+                'final': final,
+            }
+            return render(request, 'dashboard/search.html', context)
+
+
+def Date_Created(request):
+    all_movies = movie.objects.all().order_by('-date_added')
+    all_series = series.objects.all().order_by('-series_air_date')
+    final = 0
+    for i in all_movies:
+        final+=1
+    for j in all_series:
+        final+=1
+    context = {
+        'movies': all_movies, 
+        'series': all_series,
+        'content': final
+    }
+    return render(request, 'dashboard/catalog.html', context)
+
+def DateUserCreated(request):
+    all_users = Profile.objects.all().order_by('-creation_date')
+    user_number = 0
+    for i in all_users:
+        user_number+=1
+    
+    context = {
+        'all_users': all_users,
+        'user_num': user_number,
+    }
+    return render(request, 'dashboard/users.html', context)
+
+def VerifiedUsers(request):
+    all_users = Profile.objects.filter(verified=True)
+    user_number = 0
+    for i in all_users:
+        user_number+=1
+    
+    context = {
+        'all_users': all_users,
+        'user_num': user_number,
+    }
+    return render(request, 'dashboard/users.html', context)
+
+def BannedUsers(request):
+    all_users = Profile.objects.filter(verified=False)
+    user_number = 0
+    for i in all_users:
+        user_number+=1
+    
+    context = {
+        'all_users': all_users,
+        'user_num': user_number,
+    }
+    return render(request, 'dashboard/users.html', context)

@@ -22,9 +22,9 @@
 							</div>
 
 							<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
-								<li>Date created</li>
-								<li>Rating</li>
-								<li>Views</li>
+								<li onclick="window.location.href='{% url 'filter-created' %}'">Date created</li>
+								<li onclick="window.location.href='{% url 'catalog' %}'">Rating</li>
+								<li onclick="window.location.href='{% url 'catalog' %}'">Views</li>
 							</ul>
 						</div>
 						<!-- end filter sort -->

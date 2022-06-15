@@ -26,9 +26,9 @@
 							</div>
 
 							<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
-								<li>Date created</li>
-								<li>Rating</li>
-								<li>Views</li>
+								<li onclick="window.location.href='{% url 'filter-created' %}'">Date created</li>
+								<li onclick="window.location.href='{% url 'catalog' %}'">Rating</li>
+								<li onclick="window.location.href='{% url 'catalog' %}'">Views</li>
 							</ul>
 						</div>
 						<!-- end filter sort -->
@@ -36,7 +36,7 @@
 						<!-- search -->
 						<form action="{% url 'search-catalog' %}" method="POST" class="main__title-form">
 							{% csrf_token %}
-							<input type="text" placeholder="Find movie / tv series.." name="search">
+							<input type="text" placeholder="Find movie / tv series.." name="search" required>
 							<button type="submit">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"></path></svg>
 							</button>

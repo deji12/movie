@@ -22,4 +22,8 @@ urlpatterns = [
     path('dashboard/users/edit-user-profile/<str:email>/', views.EditProfileDetails, name='edit-user-profile'),
     path('dashboard/users/change-user-password/<str:email>/', views.ChangePassword, name='change-user-password'),
     path('dashboard/catalog/search/', views.search, name='search-catalog'),
+    path('dashboard/catalog/filter-by-date-created/', views.Date_Created, name='filter-created'),
+    path('dashboard/catalog/filter-by-user-date-creation/', views.DateUserCreated, name='filter-date-created'),
+    path('dashbboard/users/filter-verified-users/', views.VerifiedUsers, name='verified-users'),
+    path('dashbboard/users/filter-banned-users/', views.BannedUsers, name='banned-users'),
 ]

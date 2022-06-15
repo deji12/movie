@@ -50,7 +50,7 @@ class movie(models.Model):
     duration = models.CharField(max_length=100)
     country = models.CharField(max_length=200)
     draft = models.BooleanField(default=False)
-    date_added = models.CharField(max_length=200, default='text')
+    date_added = models.DateField(auto_now_add=True, null=True, blank=True)
     clicks = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):

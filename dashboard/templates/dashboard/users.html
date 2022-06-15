@@ -7,8 +7,15 @@
 			<!-- main title -->
 			<div class="col-12">
 				<div class="main__title">
-					<h2>Users</h2>
-
+					{% if search %}
+						{% if all_users %}
+							<h2>Search for "{{search}}"</h2>
+						{% else %}
+							<h2>No results for "{{search}}"</h2>
+						{% endif %}
+					{% else %}
+						<h2>Users</h2>
+					{% endif %}
 					<span class="main__title-stat">{{user_num}} Total</span>
 
 					<div class="main__title-wrap">
@@ -22,17 +29,19 @@
 							</div>
 
 							<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-sort">
-								<li>Date created</li>
+								<li onclick="window.location.href='{% url 'filter-date-created' %}'">Date created</li>
 								<li>Pricing plan</li>
-								<li>Status</li>
+								<li onclick="window.location.href='{% url 'verified-users' %}'">Verified</li>
+								<li onclick="window.location.href='{% url 'banned-users' %}'">Banned</li>
 							</ul>
 						</div>
 						<!-- end filter sort -->
 
 						<!-- search -->
-						<form action="#" class="main__title-form">
-							<input type="text" placeholder="Find user..">
-							<button type="button">
+						<form action="{% url 'search-catalog' %}" method="POST" class="main__title-form">
+							{% csrf_token %}
+							<input type="text" placeholder="Find user.." name="search-user" required>
+							<button type="submit">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"></path></svg>
 							</button>
 						</form>
