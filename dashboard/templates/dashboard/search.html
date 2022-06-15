@@ -7,9 +7,13 @@
 			<!-- main title -->
 			<div class="col-12">
 				<div class="main__title">
-					<h2>Catalog</h2>
+					{% if series_result and movie_result %}
+						<h2>Search for "{{search}}"</h2>
+					{% else %}
+						<h2>No results for "{{search}}"</h2>
+					{% endif %}
 
-					<span class="main__title-stat">{{content}} Total</span>
+					<span class="main__title-stat">{{final}} Total</span>
 
 					<div class="main__title-wrap">
 						<!-- filter sort -->
@@ -61,7 +65,7 @@
 						</thead>
 
 						<tbody>
-							{% for j in series %}
+							{% for j in series_result %}
 							<tr>
 								<td>
 									<div class="main__table-text">{{j.id}}</div>
@@ -112,7 +116,7 @@
 							</script>
 							{% endfor %}
 
-							{% for i in movies %}
+							{% for i in movie_result %}
 							<tr>
 								<td>
 									<div class="main__table-text">{{i.id}}</div>
@@ -171,7 +175,7 @@
 			<!-- paginator -->
 			<div class="col-12">
 				<div class="paginator-wrap">
-					<span>10 from 14 452</span>
+					<!-- <span>10 from 14 452</span> -->
 
 					<ul class="paginator">
 						<li class="paginator__item paginator__item--prev">

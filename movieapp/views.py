@@ -50,8 +50,8 @@ def searchresult(request):
     if request.method == 'POST':
         search = request.POST.get('search')
        
-        filter_for_movies = movie.objects.filter(name__contains=search)
-        filter_for_series = series.objects.filter(name__contains=search)
+        filter_for_movies = movie.objects.filter(name__icontains=search)
+        filter_for_series = series.objects.filter(name__icontains=search)
 
 
         context = {
@@ -480,22 +480,17 @@ def signin(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['pass']
-
-        check = User.objects.filter(email=email)
-        if check:
-            get_user = User.objects.get(email=email)
-            user = authenticate(username=get_user.username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')
-            else:
-                messages.error(request, 'Invalid password')
-                return redirect('login')   
+        uname = request.POST['username']
+        pass1 = request.POST['pass'] 
+        
+        my_user = authenticate(username=uname, password=pass1)
+        if my_user is not None:
+            login(request, my_user)
+            return redirect('home')
         else:
-            messages.error(request, 'Invalid email')
-            return redirect('login')    
+            messages.error(request, 'Invalid password')
+            return redirect('login')   
+    
     return render(request, 'movieapp/signin.html', {})
 
 def signup(request):
@@ -503,10 +498,11 @@ def signup(request):
         return redirect('home')
     if request.method == 'POST':
         name = request.POST['name']
+        user_name = request.POST['uname']
         email = request.POST['email']
-        password = request.POST['pass']
+        pass1 = request.POST['pass']
 
-        if len(password) < 8:
+        if len(pass1) < 8:
             messages.error(request, 'Password is too short.')
             return redirect('register')
 
@@ -524,12 +520,12 @@ def signup(request):
             first_name = name.split()[0]
             last_name = name.split()[1]
 
-            new_user = User.objects.create(username=name, email=email, password=password)
+            new_user = User.objects.create_user(username=user_name, email=email, password=pass1)
             new_user.first_name=first_name
             new_user.last_name  = last_name
             new_user.save()
 
-            new_profile = Profile(user=new_user, email=email, user_name=first_name)
+            new_profile = Profile(user=new_user, email=email, user_name=user_name)
             new_profile.save()
 
             messages.success(request, 'User successfully created. Login')

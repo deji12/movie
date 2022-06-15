@@ -7,7 +7,13 @@
 			<!-- main title -->
 			<div class="col-12">
 				<div class="main__title">
-					<h2>Edit user</h2>
+					<h2>Edit user <span style="color: #ff55a5;">
+					{% if messages %}
+						{% for message in messages %}
+							{{message}}
+						{% endfor %}
+					{% endif %}
+					</span></h2>
 				</div>
 			</div>
 			<!-- end main title -->
@@ -22,8 +28,14 @@
 						</div>
 						<!-- or red -->
 						<div class="profile__meta profile__meta--green">
-							<h3>Username <span>(Approved)</span></h3>
-							<span>FlixGo ID: 23562</span>
+							<h3>{{profile.user_name}} <span>
+								{% if profile.verified == True %}
+									(Approved)
+								{% else %}
+									(Banned)
+								{% endif %}
+							</span></h3>
+							<span>ProtonTv ID: {{profile.user.id}}</span>
 						</div>
 					</div>
 					<!-- end profile user -->
@@ -65,9 +77,14 @@
 
 					<!-- profile btns -->
 					<div class="profile__actions">
-						<a href="#modal-status3" class="profile__action profile__action--banned open-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"/></svg></a>
-						<a href="#modal-delete3" class="profile__action profile__action--delete open-modal"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg></a>
+						<a href="#modal-status3" class="profile__action profile__action--banned open-modal" onclick="ban_user()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"/></svg></a>
+						<a href="#modal-delete3" class="profile__action profile__action--delete open-modal" onclick="ban_user()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg></a>
 					</div>
+					<script>
+						function ban_user () {
+							document.getElementById('draft-user').href = "{% url 'ban-user' user.email %}"
+						}
+					</script>
 					<!-- end profile btns -->
 				</div>
 			</div>
@@ -80,7 +97,8 @@
 						<div class="row">
 							<!-- details form -->
 							<div class="col-12 col-lg-6">
-								<form action="#" class="profile__form">
+								<form action="{% url 'edit-user-profile' profile.email %}" method="POST" class="profile__form">
+									{% csrf_token %}
 									<div class="row">
 										<div class="col-12">
 											<h4 class="profile__title">Profile details</h4>
@@ -116,7 +134,7 @@
 
 										<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 											<label class="profile__label" for="subscription">Subscription</label>
-											<select class="js-example-basic-single" id="subscription">
+											<select class="js-example-basic-single" id="subscription" name="subscription">
 												<option value="Basic">Basic</option>
 												<option value="Premium">Premium</option>
 												<option value="Cinematic">Cinematic</option>
@@ -125,7 +143,7 @@
 
 										<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 											<label class="profile__label" for="rights">Rights</label>
-											<select class="js-example-basic-single" id="rights">
+											<select class="js-example-basic-single" id="rights" name="user_type">
 												<option value="User">User</option>
 												<option value="Moderator">Moderator</option>
 												<option value="Admin">Admin</option>
@@ -133,7 +151,7 @@
 										</div>
 
 										<div class="col-12">
-											<button class="profile__btn" type="button">Save</button>
+											<button class="profile__btn" type="submit">Save</button>
 										</div>
 									</div>
 								</form>
@@ -142,7 +160,8 @@
 
 							<!-- password form -->
 							<div class="col-12 col-lg-6">
-								<form action="#" class="profile__form">
+								<form action="{% url 'change-user-password' profile.email %}" method="POST" class="profile__form">
+									{% csrf_token %}
 									<div class="row">
 										<div class="col-12">
 											<h4 class="profile__title">Change password</h4>
@@ -151,26 +170,26 @@
 										<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 											<div class="profile__group">
 												<label class="profile__label" for="oldpass">Old Password</label>
-												<input id="oldpass" type="password" name="oldpass" class="profile__input">
+												<input id="oldpass" type="password" name="oldpass" class="profile__input" required>
 											</div>
 										</div>
 
 										<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 											<div class="profile__group">
 												<label class="profile__label" for="newpass">New Password</label>
-												<input id="newpass" type="password" name="newpass" class="profile__input">
+												<input id="newpass" type="password" name="newpass" class="profile__input" required>
 											</div>
 										</div>
 
 										<div class="col-12 col-md-6 col-lg-12 col-xl-6">
 											<div class="profile__group">
 												<label class="profile__label" for="confirmpass">Confirm New Password</label>
-												<input id="confirmpass" type="password" name="confirmpass" class="profile__input">
+												<input id="confirmpass" type="password" name="confirmpass" class="profile__input" required>
 											</div>
 										</div>
 
 										<div class="col-12">
-											<button class="profile__btn" type="button">Change</button>
+											<button class="profile__btn" type="submit">Change</button>
 										</div>
 									</div>
 								</form>
@@ -198,306 +217,81 @@
 								</thead>
 
 								<tbody>
+									{% for i in episode %}
 									<tr>
 										<td>
-											<div class="main__table-text">23</div>
+											<div class="main__table-text">{{i.id}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
+											<div class="main__table-text">{{i.episode}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">John Doe</div>
+											<div class="main__table-text">{{i.name}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
+											<div class="main__table-text">{{i.body}}</div>
 										</td>
 										<td>
 											<div class="main__table-text">12 / 7</div>
 										</td>
 										<td>
-											<div class="main__table-text">24 Oct 2019</div>
+											<div class="main__table-text">{{i.date}}</div>
 										</td>
 										<td>
 											<div class="main__table-btns">
 												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
 													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
 												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal" onclick="delete_comment(name = '{{i.name}}', title = '{{i.episode.title}}', series_name = '{{i.series_name}}', comment_body = '{{i.body}}')">
 													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
 												</a>
 											</div>
 										</td>
 									</tr>
+									<script>
+										function delete_comment (name, title, series_name, comment_body) {
+											document.getElementById('delete-comment').href = `comments/delete/${name}/${title}/${series_name}/${comment_body}/`
+										}
+									</script>
+									{% endfor %}
+
+									{% for j in movie %}
 									<tr>
 										<td>
-											<div class="main__table-text">24</div>
+											<div class="main__table-text">{{j.id}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">Benched</div>
+											<div class="main__table-text">{{j.episode}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">John Doe</div>
+											<div class="main__table-text">{{j.name}}</div>
 										</td>
 										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">67 / 22</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">25</div>
-										</td>
-										<td>
-											<div class="main__table-text">Whitney</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">44 / 5</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">26</div>
-										</td>
-										<td>
-											<div class="main__table-text">Blindspotting</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">20 / 6</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">27</div>
-										</td>
-										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">8 / 132</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">28</div>
-										</td>
-										<td>
-											<div class="main__table-text">Benched</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">6 / 1</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">29</div>
-										</td>
-										<td>
-											<div class="main__table-text">Whitney</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">10 / 0</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">30</div>
-										</td>
-										<td>
-											<div class="main__table-text">Blindspotting</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">13 / 14</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">31</div>
-										</td>
-										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
+											<div class="main__table-text">{{j.body}}</div>
 										</td>
 										<td>
 											<div class="main__table-text">12 / 7</div>
 										</td>
 										<td>
-											<div class="main__table-text">24 Oct 2019</div>
+											<div class="main__table-text">{{j.date}}</div>
 										</td>
 										<td>
 											<div class="main__table-btns">
 												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
 													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
 												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
+												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal" onclick="delete_comment_movie ()">
 													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
 												</a>
 											</div>
 										</td>
 									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">32</div>
-										</td>
-										<td>
-											<div class="main__table-text">Benched</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text">67 / 22</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
+									<script>
+										function delete_comment_movie () {
+											document.getElementById('delete-comment').href = "{% url 'delete-comment-movie' j.name.username j.movie j.body %}"
+										}
+									</script>
+									{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -507,7 +301,7 @@
 					<!-- paginator -->
 					<div class="col-12">
 						<div class="paginator-wrap">
-							<span>10 from 23</span>
+							<span>{{user_comment}} of {{number_of_comments}}</span>
 
 							<ul class="paginator">
 								<li class="paginator__item paginator__item--prev">
@@ -545,336 +339,87 @@
 								</thead>
 
 								<tbody>
-									<tr>
-										<td>
-											<div class="main__table-text">23</div>
-										</td>
-										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">7.9</div>
-										</td>
-										<td>
-											<div class="main__table-text">12 / 7</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">24</div>
-										</td>
-										<td>
-											<div class="main__table-text">Benched</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">8.6</div>
-										</td>
-										<td>
-											<div class="main__table-text">67 / 22</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">25</div>
-										</td>
-										<td>
-											<div class="main__table-text">Whitney</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">6.0</div>
-										</td>
-										<td>
-											<div class="main__table-text">44 / 5</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">26</div>
-										</td>
-										<td>
-											<div class="main__table-text">Blindspotting</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">9.1</div>
-										</td>
-										<td>
-											<div class="main__table-text">20 / 6</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">27</div>
-										</td>
-										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">5.5</div>
-										</td>
-										<td>
-											<div class="main__table-text">8 / 132</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">28</div>
-										</td>
-										<td>
-											<div class="main__table-text">Benched</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">7.0</div>
-										</td>
-										<td>
-											<div class="main__table-text">6 / 1</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">29</div>
-										</td>
-										<td>
-											<div class="main__table-text">Whitney</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">9.0</div>
-										</td>
-										<td>
-											<div class="main__table-text">10 / 0</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">30</div>
-										</td>
-										<td>
-											<div class="main__table-text">Blindspotting</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">6.2</div>
-										</td>
-										<td>
-											<div class="main__table-text">13 / 14</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">31</div>
-										</td>
-										<td>
-											<div class="main__table-text">I Dream in Another Language</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">7.9</div>
-										</td>
-										<td>
-											<div class="main__table-text">12 / 7</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="main__table-text">32</div>
-										</td>
-										<td>
-											<div class="main__table-text">Benched</div>
-										</td>
-										<td>
-											<div class="main__table-text">John Doe</div>
-										</td>
-										<td>
-											<div class="main__table-text">Lorem Ipsum is simply dummy text...</div>
-										</td>
-										<td>
-											<div class="main__table-text main__table-text--rate">8.6</div>
-										</td>
-										<td>
-											<div class="main__table-text">67 / 22</div>
-										</td>
-										<td>
-											<div class="main__table-text">24 Oct 2019</div>
-										</td>
-										<td>
-											<div class="main__table-btns">
-												<a href="#modal-view2" class="main__table-btn main__table-btn--view open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
-												</a>
-												<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal">
-													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
-												</a>
-											</div>
-										</td>
-									</tr>
+								{% for i in movie_review %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.movie}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.body}}</div>
+									</td>
+									<td>
+										<div class="main__table-text main__table-text--rate">{{i.rate}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">12 / 7</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.date}}</div>
+									</td>
+									<td>
+										<div class="main__table-btns">
+											<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
+											</a>
+											<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal" onclick="delete_review()">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<script>
+									function delete_review () {
+										document.getElementById('delete-review').href = '{% url "delete-review-movie" i.name.username i.movie i.body %}'
+									}
+								</script>
+								{% endfor %}
+
+								{% for i in series_review %}
+								<tr>
+									<td>
+										<div class="main__table-text">{{i.id}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.series_name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.name}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.body}}</div>
+									</td>
+									<td>
+										<div class="main__table-text main__table-text--rate">{{i.rate}}</div>
+									</td>
+									<td>
+										<div class="main__table-text">12 / 7</div>
+									</td>
+									<td>
+										<div class="main__table-text">{{i.date}}</div>
+									</td>
+									<td>
+										<div class="main__table-btns">
+											<a href="#modal-view" class="main__table-btn main__table-btn--view open-modal">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z"/></svg>
+											</a>
+											<a href="#modal-delete2" class="main__table-btn main__table-btn--delete open-modal" onclick="delete_review_series()">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"/></svg>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<script>
+									function delete_review_series () {
+										document.getElementById('delete-review').href = '{% url "delete-review-series" i.name.username i.episode.title i.series_name i.body %}'
+									}
+								</script>
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -884,7 +429,7 @@
 					<!-- paginator -->
 					<div class="col-12">
 						<div class="paginator-wrap">
-							<span>10 from 32</span>
+							<span>{{user_review}} of {{number_of_revs}}</span>
 
 							<ul class="paginator">
 								<li class="paginator__item paginator__item--prev">
@@ -932,9 +477,9 @@
 	<h6 class="modal__title">Comment delete</h6>
 
 	<p class="modal__text">Are you sure to permanently delete this comment?</p>
-
+	<a href="" id="delete-comment"></a>
 	<div class="modal__btns">
-		<button class="modal__btn modal__btn--apply" type="button">Delete</button>
+		<button class="modal__btn modal__btn--apply" type="button" onclick="window.location.href=document.getElementById('delete-comment').href" type="button">Delete</button>
 		<button class="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
 	</div>
 </div>
@@ -958,9 +503,9 @@
 	<h6 class="modal__title">Review delete</h6>
 
 	<p class="modal__text">Are you sure to permanently delete this review?</p>
-
+	<a href="" id="delete-review"></a>
 	<div class="modal__btns">
-		<button class="modal__btn modal__btn--apply" type="button">Delete</button>
+		<button class="modal__btn modal__btn--apply" type="button" onclick="window.location.href=document.getElementById('delete-review').href">Delete</button>
 		<button class="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
 	</div>
 </div>
@@ -971,9 +516,9 @@
 	<h6 class="modal__title">Status change</h6>
 
 	<p class="modal__text">Are you sure about immediately change status?</p>
-
+	
 	<div class="modal__btns">
-		<button class="modal__btn modal__btn--apply" type="button">Apply</button>
+		<button class="modal__btn modal__btn--apply" type="button" onclick="window.location.href=document.getElementById('draft-user').href">Apply</button>
 		<button class="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
 	</div>
 </div>
@@ -984,9 +529,9 @@
 	<h6 class="modal__title">User delete</h6>
 
 	<p class="modal__text">Are you sure to permanently delete this user?</p>
-
+	<a href="" id="draft-user"></a>
 	<div class="modal__btns">
-		<button class="modal__btn modal__btn--apply" type="button">Delete</button>
+		<button class="modal__btn modal__btn--apply" type="button" onclick="window.location.href=document.getElementById('draft-user').href">Delete</button>
 		<button class="modal__btn modal__btn--dismiss" type="button">Dismiss</button>
 	</div>
 </div>
