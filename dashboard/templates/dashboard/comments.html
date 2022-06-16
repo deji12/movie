@@ -7,7 +7,14 @@
 			<!-- main title -->
 			<div class="col-12">
 				<div class="main__title">
-					<h2>Comments</h2>
+					<h2>Comments
+						{% if messages %}
+							{% for message in messages %}
+								
+								<span style="color: #ff55a5;">{{message}}</span>
+							{% endfor %}
+						{% endif %}
+					</h2>
 
 					<span class="main__title-stat">21,356 Total</span>
 
@@ -29,9 +36,10 @@
 						<!-- end filter sort -->
 
 						<!-- search -->
-						<form action="#" class="main__title-form">
-							<input type="text" placeholder="Key word..">
-							<button type="button">
+						<form action="{% url 'filter-comment-series' %}" method="POST" class="main__title-form">
+							{% csrf_token %}
+							<input type="text" placeholder="Key word.." name="search" required>
+							<button type="submit">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"></path></svg>
 							</button>
 						</form>

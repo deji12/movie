@@ -400,3 +400,29 @@ def BannedUsers(request):
         'user_num': user_number,
     }
     return render(request, 'dashboard/users.html', context)
+
+def FilterCommentsSeries(request):
+    if request.method == 'POST':
+        search_val = request.POST.get('search')
+        user = User.objects.get(username=search_val)
+        series_comment = episode_comment.objects.filter(name=user)
+        movie_comment = comment.objects.filter(name=user)
+        context = {
+                'series': series_comment,
+                'movie': movie_comment,
+                'search': search_val,
+            }
+        return render(request, 'dashboard/comments.html', context)
+        # try:
+        #     user = User.objects.get(username=user)
+        #     series_comment = episode_comment.objects.filter(name__icontains=user)
+        #     movie_comment = comment.objects.filter(name__icontains=search)
+        #     context = {
+        #         'series': series_comment,
+        #         'movie': movie_comment,
+        #         'search': search_val,
+        #     }
+        #     return render(request, 'dashboard/comments.html', context)
+        # except:
+        #     messages.success(request, f'| User {search_val} does not exist')
+        #     return render(request, 'dashboard/comments.html')
