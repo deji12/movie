@@ -98,16 +98,16 @@ def DeleteCommentMovies(request, name, movie_name, body):
     return redirect('comments')
 
 def Reviews(request):
-    all_reviews = reviewss.objects.all()
+    movie_reviews = reviewss.objects.all()
     episode_reviews = episode_review.objects.all()
     num_reviews = 0
-    for i in all_reviews:
+    for i in movie_reviews:
         num_reviews+=1
     for j in episode_reviews:
         num_reviews+=1
 
     context = {
-        'reviews': all_reviews,
+        'reviews': movie_reviews,
         'episode_review': episode_reviews,
         'num_revs':num_reviews,
     }
@@ -413,16 +413,23 @@ def FilterCommentsSeries(request):
                 'search': search_val,
             }
         return render(request, 'dashboard/comments.html', context)
-        # try:
-        #     user = User.objects.get(username=user)
-        #     series_comment = episode_comment.objects.filter(name__icontains=user)
-        #     movie_comment = comment.objects.filter(name__icontains=search)
-        #     context = {
-        #         'series': series_comment,
-        #         'movie': movie_comment,
-        #         'search': search_val,
-        #     }
-        #     return render(request, 'dashboard/comments.html', context)
-        # except:
-        #     messages.success(request, f'| User {search_val} does not exist')
-        #     return render(request, 'dashboard/comments.html')
+     
+def FilterReviews(request):
+    if request.method == 'POST':
+        search_val = request.POST.get('search')
+
+        user = User.objects.get(username=search_val)
+        movie_reviews = reviewss.objects.filter(name=user)
+        episode_reviews = episode_review.objects.filter(name=user)
+        num_reviews = 0
+        for i in movie_reviews:
+            num_reviews+=1
+        for j in episode_reviews:
+            num_reviews+=1
+
+        context = {
+            'reviews': movie_reviews,
+            'episode_review': episode_reviews,
+            'num_revs':num_reviews,
+        }
+        return render(request, 'dashboard/reviews.html', context)

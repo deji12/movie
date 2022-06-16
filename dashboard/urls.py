@@ -26,5 +26,6 @@ urlpatterns = [
     path('dashboard/catalog/filter-by-user-date-creation/', views.DateUserCreated, name='filter-date-created'),
     path('dashbboard/users/filter-verified-users/', views.VerifiedUsers, name='verified-users'),
     path('dashbboard/users/filter-banned-users/', views.BannedUsers, name='banned-users'),
-    path('dashboard/comments/filter-user-comments/', views.FilterCommentsSeries, name='filter-comment-series')
+    path('dashboard/comments/filter-user-comments/', views.FilterCommentsSeries, name='filter-comment-series'),
+    path('dashboard/comments/filter-user-reviews/', views.FilterReviews, name='filter-comment-reviews'),
 ]
