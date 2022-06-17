@@ -621,10 +621,13 @@ def contacts(request):
         email_mess.fail_silently = True
         email_mess.send()
 
+        messages.success(request, 'Thank you for contacting us. We will reply shortly')
+        return render(request, 'movieapp/contacts.html', {})
+    
     return render(request, 'movieapp/contacts.html', {})
     
 
-def NotFound(request):
+def NotFound(request, exception):
     return render(request, 'movieapp/404.html', {})
 
 def series_detail(request, name):
@@ -725,12 +728,11 @@ def series_detail_epi(request, name, seasons ,epi):
    
     filtered_series = series.objects.filter(genre1=series_genre)
     filtered_series2 = series.objects.filter(genre2=series_genre)
-    print(filtered_series2)
-    print(filtered_series)
+  
 
     filtered_series3 = series.objects.filter(genre1=series_genre2)
     filtered_series4 = series.objects.filter(genre2=series_genre2)
-    print()
+
 
     pics = photos.objects.filter(series_name=get_series)
 
