@@ -485,6 +485,10 @@ def signin(request):
         
         my_user = authenticate(username=uname, password=pass1)
         if my_user is not None:
+            get_profile = Profile.objects.get(user=my_user)
+            if get_profile.verified  == False:
+                messages.error(request, 'Your account has been temporarily banned due to misconduct.')
+                return redirect('login')
             login(request, my_user)
             return redirect('home')
         else:
