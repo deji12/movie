@@ -93,10 +93,10 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd6h49jqsaeh2q0',
-        'USER': 'pxxluardqylbko',
-        'PASSWORD': '9b679ae75f133da838af71a8253711f41725d47c21634b746d408b896acbf6dd',
-        'HOST': 'ec2-34-230-153-41.compute-1.amazonaws.com',
+        'NAME': 'd3r9utq682539j',
+        'USER': 'u35b7ann1etcvb',
+        'PASSWORD': 'pa11a8be0f7ea73b553c04fbe5d914e5aa7b8fa7ca894d9eb3be2b02609374bca',
+        'HOST': 'ec2-52-7-121-240.compute-1.amazonaws.com',
         'PORT': '5432'
     }
 }

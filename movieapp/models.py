@@ -94,6 +94,7 @@ class series(models.Model):
     country = models.CharField(max_length=200)
     draft = models.BooleanField(default=False)
     clicks = models.IntegerField(null=True, blank=True, default=0)
+    cat = models.CharField(default='anime', max_length=200)
 
     def __str__(self):
         return str(self.name)

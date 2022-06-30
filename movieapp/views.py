@@ -33,13 +33,13 @@ import requests
 def home(request):
     get_movies = movie.objects.all()
     get_series = series.objects.all()
-    get_cartoons = movie.objects.filter(cat='cartoon')
+    get_anime = series.objects.filter(cat='anime')
     get_premier = movie.objects.filter(premier=True)
     get_premier_series = series.objects.filter(premier=True)
     context = {
         'movie': get_movies,
         'series': get_series,
-        'cartoon': get_cartoons,
+        'anime': get_anime,
         'premier': get_premier,
         'series_premier': get_premier_series,
     }

@@ -113,7 +113,7 @@
 						</li>
 
 						<li class="nav-item" role="presentation">
-							<a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">CARTOONS</a>
+							<a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4" aria-selected="false">ANIME</a>
 						</li>
 					</ul>
 					<!-- end content tabs nav -->
@@ -299,7 +299,7 @@
 			<div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="4-tab">
 				<div class="row row--grid">
 					<!-- card -->
-					{% for k in cartoon %}
+					{% for k in anime %}
 						{% if k.draft != True %}
 							<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 								<div class="card">
@@ -314,9 +314,9 @@
 										<span class="card__category">
 											<a href="#">{{k.genre1}}</a>
 											<a href="#">{{k.genre2}}</a>
-											<a href="#">Animation</a>
+											<a href="#">Anime</a>
 										</span>
-										<span class="card__rate">6.3</span>
+										<span class="card__rate">{{k.rating}}</span>
 									</div>
 								</div>
 							</div>
