@@ -643,7 +643,7 @@ def series_detail(request, name):
 
     # for i in get_seasons:
     #     get_episodes_for_display = episode.objects.filter(series_name=get_series, season_val=i)
-    get_episodes_for_display = episode.objects.filter(series_name=get_series)
+    get_episodes_for_display = episode.objects.filter(series_name=get_series).order_by('episode_num')
 
     fi = 0
     for i in get_episodes:
@@ -654,16 +654,17 @@ def series_detail(request, name):
 
     series_genre = get_series.genre1
     series_genre2 = get_series.genre2
-    
-    filtered_series = series.objects.filter(genre1=series_genre)
-    filtered_series2 = series.objects.filter(genre2=series_genre2)
-
-    filtered_series3 = series.objects.filter(genre1=series_genre2)
-    filtered_series4 = series.objects.filter(genre2=series_genre2)
-
     pics = photos.objects.filter(series_name=get_series)
 
-    context = {
+    if get_series.cat == 'series':
+    
+        filtered_series = series.objects.filter(genre1=series_genre)
+        filtered_series2 = series.objects.filter(genre2=series_genre2)
+
+        filtered_series3 = series.objects.filter(genre1=series_genre2)
+        filtered_series4 = series.objects.filter(genre2=series_genre2)
+
+        context = {
         'series': get_series,
         'first_epi': first_episode,
         'season': get_seasons,
@@ -674,8 +675,30 @@ def series_detail(request, name):
         'dis3': filtered_series3,
         'dis4': filtered_series4,
         'pic': pics
-    }
-    return render(request, 'movieapp/details2.html', context)
+        }
+        return render(request, 'movieapp/details2.html', context)
+    
+    else:
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')
+
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')
+
+        context = {
+        'series': get_series,
+        'first_epi': first_episode,
+        'season': get_seasons,
+        'epi': fi,
+        'episodes': get_episodes_for_display,
+        'dis': filtered_series,
+        'dis2': filtered_series2,
+        'dis3': filtered_series3,
+        'dis4': filtered_series4,
+        'pic': pics
+        }
+        return render(request, 'movieapp/details2.html', context)
+    
 
 def series_detail_epi(request, name, seasons ,epi):
     get_series = series.objects.get(name=name)
@@ -684,7 +707,7 @@ def series_detail_epi(request, name, seasons ,epi):
     get_seasons = season.objects.filter(series_name=get_series)
     get_episodes = episode.objects.filter(series_name=get_series)
 
-    get_episodes_for_display = episode.objects.filter(series_name=get_series)
+    get_episodes_for_display = episode.objects.filter(series_name=get_series).order_by('episode_num')
 
     get_series_for_episode = series.objects.get(name=name)
 
@@ -730,17 +753,44 @@ def series_detail_epi(request, name, seasons ,epi):
     
     series_genre2 = get_series.genre2
    
-    filtered_series = series.objects.filter(genre1=series_genre)
-    filtered_series2 = series.objects.filter(genre2=series_genre)
+    # filtered_series = series.objects.filter(genre1=series_genre)
+    # filtered_series2 = series.objects.filter(genre2=series_genre)
   
 
-    filtered_series3 = series.objects.filter(genre1=series_genre2)
-    filtered_series4 = series.objects.filter(genre2=series_genre2)
+    # filtered_series3 = series.objects.filter(genre1=series_genre2)
+    # filtered_series4 = series.objects.filter(genre2=series_genre2)
 
+
+    # pics = photos.objects.filter(series_name=get_series)
+
+    # context = {
+    #     'series': get_series,
+    #     'first_epi': first_episode,
+    #     'season': get_seasons,
+    #     'epi': fi,
+    #     'episodes': get_episodes_for_display,
+    #     'se': part_se,
+    #     'coms': get_episode_comments,
+    #     'revs': get_episode_reviews,
+    #     'dis': filtered_series,
+    #     'dis2': filtered_series2,
+    #     'dis3': filtered_series3,
+    #     'dis4': filtered_series4,
+    #     'pic': pics,
+    # }
+    # return render(request, 'movieapp/epi.html', context)
 
     pics = photos.objects.filter(series_name=get_series)
 
-    context = {
+    if get_series.cat == 'series':
+    
+        filtered_series = series.objects.filter(genre1=series_genre)
+        filtered_series2 = series.objects.filter(genre2=series_genre2)
+
+        filtered_series3 = series.objects.filter(genre1=series_genre2)
+        filtered_series4 = series.objects.filter(genre2=series_genre2)
+
+        context = {
         'series': get_series,
         'first_epi': first_episode,
         'season': get_seasons,
@@ -753,7 +803,35 @@ def series_detail_epi(request, name, seasons ,epi):
         'dis2': filtered_series2,
         'dis3': filtered_series3,
         'dis4': filtered_series4,
-        'pic': pics,
-    }
-    return render(request, 'movieapp/epi.html', context)
+        'pic': pics
+        }
+        return render(request, 'movieapp/epi.html', context)
+    
+    else:
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')
+
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')
+
+        context = {
+        'series': get_series,
+        'first_epi': first_episode,
+        'season': get_seasons,
+        'epi': fi,
+        'episodes': get_episodes_for_display,
+        'se': part_se,
+        'coms': get_episode_comments,
+        'revs': get_episode_reviews,
+        'dis': filtered_series,
+        'dis2': filtered_series2,
+        'dis3': filtered_series3,
+        'dis4': filtered_series4,
+        'pic': pics
+        }
+        return render(request, 'movieapp/epi.html', context)
+    
+
+
+    
 
