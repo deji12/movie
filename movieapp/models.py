@@ -121,7 +121,7 @@ class episode(models.Model):
     title = models.CharField(max_length=200, default='title')
     series_name = models.ForeignKey(series, related_name='season_epi', on_delete=models.CASCADE)
     season_val = models.ForeignKey(season, related_name='episode', on_delete=models.CASCADE)   
-    episode_num = models.CharField(max_length=100, default='1') 
+    episode_num = models.IntegerField( default=1) 
     video = models.CharField(max_length=10000, null=True, blank=True)
     duration = models.CharField(max_length=100)
     dou = models.DateField(auto_now_add=True)
