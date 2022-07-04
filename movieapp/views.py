@@ -92,20 +92,55 @@ def detail(request, name):
     mov = movie.objects.get(name=name)
     mov.clicks +=1
     mov.save()
+
     pics = photos.objects.filter(movie_name=mov)
-    all_movies = movie.objects.all()
     all_coms = comment.objects.filter(movie=mov)
     all_reviews = reviewss.objects.filter(movie=mov)
     get_movie = movie.objects.get(name=name)
 
-    context = {
-        'movie': get_movie,
-        'al': all_movies,
-        'coms': all_coms,
-        'revs': all_reviews,
-        'pics': pics,
-    }
-    return render(request, 'movieapp/details1.html', context)
+    all_movies = movie.objects.all()
+    movie_genre = mov.genre1
+    movie_genre2 = mov.genre2
+
+
+    if mov.cat == 'anime':
+        filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre)
+        filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2)
+
+        filtered_movie3 = movie.objects.filter(cat='anime', genre1=movie_genre2)
+        filtered_movie4 = movie.objects.filter(cat='anime', genre2=movie_genre)
+
+        context = {
+            'movie': get_movie,
+            'al': all_movies,
+            'coms': all_coms,
+            'revs': all_reviews,
+            'dis': filtered_movie,
+            'dis2': filtered_movie2,
+            'dis3': filtered_movie3,
+            'dis4': filtered_movie4,
+            'pics': pics,
+        }
+        return render(request, 'movieapp/details1.html', context)
+
+    else:
+        filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre)
+        filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre)
+
+        filtered_movie3 = movie.objects.filter(cat='movie', genre1=movie_genre2)
+        filtered_movie4 = movie.objects.filter(cat='movie', genre2=movie_genre2)
+        context = {
+            'movie': get_movie,
+            'al': all_movies,
+            'coms': all_coms,
+            'revs': all_reviews,
+            'dis': filtered_movie,
+            'dis2': filtered_movie2,
+            'dis3': filtered_movie3,
+            'dis4': filtered_movie4,
+            'pics': pics,
+        }
+        return render(request, 'movieapp/details1.html', context)
 
 @csrf_exempt
 def catalog_grid(request):
