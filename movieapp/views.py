@@ -104,11 +104,11 @@ def detail(request, name):
 
 
     if mov.cat == 'anime':
-        filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre)
-        filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2)
+        filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre)[:2]
+        filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2)[:2]
 
-        filtered_movie3 = movie.objects.filter(cat='anime', genre1=movie_genre2)
-        filtered_movie4 = movie.objects.filter(cat='anime', genre2=movie_genre)
+        filtered_movie3 = movie.objects.filter(cat='anime', genre1=movie_genre2)[:2]
+        filtered_movie4 = movie.objects.filter(cat='anime', genre2=movie_genre)[:2]
 
         context = {
             'movie': get_movie,
@@ -124,11 +124,11 @@ def detail(request, name):
         return render(request, 'movieapp/details1.html', context)
 
     else:
-        filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre)
-        filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre)
+        filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre)[:2]
+        filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre)[:2]
 
-        filtered_movie3 = movie.objects.filter(cat='movie', genre1=movie_genre2)
-        filtered_movie4 = movie.objects.filter(cat='movie', genre2=movie_genre2)
+        filtered_movie3 = movie.objects.filter(cat='movie', genre1=movie_genre2)[:2]
+        filtered_movie4 = movie.objects.filter(cat='movie', genre2=movie_genre2)[:2]
         context = {
             'movie': get_movie,
             'al': all_movies,
@@ -693,11 +693,11 @@ def series_detail(request, name):
 
     if get_series.cat == 'series':
     
-        filtered_series = series.objects.filter(genre1=series_genre)
-        filtered_series2 = series.objects.filter(genre2=series_genre2)
+        filtered_series = series.objects.filter(genre1=series_genre)[:2]
+        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2]
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2)
-        filtered_series4 = series.objects.filter(genre2=series_genre2)
+        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2]
+        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2]
 
         context = {
         'series': get_series,
@@ -714,11 +714,11 @@ def series_detail(request, name):
         return render(request, 'movieapp/details2.html', context)
     
     else:
-        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')
-        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2]
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')
-        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2]
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
 
         context = {
         'series': get_series,
@@ -819,11 +819,11 @@ def series_detail_epi(request, name, seasons ,epi):
 
     if get_series.cat == 'series':
     
-        filtered_series = series.objects.filter(genre1=series_genre)
-        filtered_series2 = series.objects.filter(genre2=series_genre2)
+        filtered_series = series.objects.filter(genre1=series_genre)[:2]
+        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2]
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2)
-        filtered_series4 = series.objects.filter(genre2=series_genre2)
+        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2]
+        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2]
 
         context = {
         'series': get_series,
@@ -843,11 +843,11 @@ def series_detail_epi(request, name, seasons ,epi):
         return render(request, 'movieapp/epi.html', context)
     
     else:
-        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')
-        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2]
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')
-        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2]
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
 
         context = {
         'series': get_series,
