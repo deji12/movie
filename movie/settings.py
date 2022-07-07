@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-2ns(12mi_0-i^lq8z9&*$u90lqt9#x6k*z(*o-kl*izfq7yl)y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://127.0.0.1:8000', 'www.protontv.herokuapp.com' ]
+ALLOWED_HOSTS = ['http://127.0.0.1:8000', 'www.protontv.herokuapp.com', 'http://protontv.cc.com', 'https://protontv.cc.com' ]
 
 
 # Application definition
