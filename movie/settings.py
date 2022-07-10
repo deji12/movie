@@ -31,7 +31,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['http://127.0.0.1:8000', 'www.protontv.herokuapp.com','https://protontv.cc', 'https://www.protontv.cc',]
 
-
+SECURE_SSL_REDIRECT = True
 # Application definition
 
 INSTALLED_APPS = [
