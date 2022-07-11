@@ -27,11 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2ns(12mi_0-i^lq8z9&*$u90lqt9#x6k*z(*o-kl*izfq7yl)y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['http://127.0.0.1:8000', 'www.protontv.herokuapp.com','https://protontv.cc', 'https://www.protontv.cc',]
 
-# SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = True
 # Application definition
 
 INSTALLED_APPS = [
