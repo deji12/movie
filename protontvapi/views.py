@@ -8,8 +8,9 @@ from rest_framework.response import Response
 def home(request):
     return Response({
         'To get all movies': 'protontv.cc/api/all-movies/',
-        'To get a particular movie': 'protontv.cc/api/get-movie/moviename/',
+        'To get a particular movie': 'protontv.cc/api/get-movie/movie name/',
         'To get all series': 'protontv.cc/api-all-series/',
+        'To get a particular series': 'protontv.cc/api/get-series/series name/',
         'To get all series seasons':  'protontv.cc/api/all-series-seasons/',
         'To get all series episodes': 'protontv.cc/api/all-series-episodes/',
         'To get all genres': 'protontv.cc/api/all-genres/',
@@ -56,4 +57,10 @@ def Genres(request):
 def GetMovie(request, name):
     mov = movie.objects.get(name=name)
     serializer = GetAllMoviesSerializer(mov, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def GetSeries(request, name):
+    serie = series.objects.get(name=name)
+    serializer = GetAllSeriesSerializer(serie, many=False)
     return Response(serializer.data)

@@ -10,4 +10,5 @@ urlpatterns = [
     path('all-series-seasons/', views.Photos),
     path('all-genres/', views.Genres),
     path('get-movie/<str:name>/', views.GetMovie),
+    path('get-series/<str:name>/', views.GetSeries),
 ]
