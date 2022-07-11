@@ -22,6 +22,7 @@ urlpatterns = [
     path('', include('movieapp.urls')),
     # path('tracking/', include('tracking.urls'))
     path('', include('dashboard.urls')),
+    path('api/', include('protontvapi.urls')),
 ]
 
 handler404 = handler404 = 'movieapp.views.NotFound'
