@@ -19,19 +19,19 @@ def home(request):
 
 @api_view(['GET'])
 def Movies(request):
-    all_movies = movie.objects.all()
+    all_movies = movie.objects.all().order_by('-date_added')
     serializer = GetAllMoviesSerializer(all_movies, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def Series(request):
-    all_series = series.objects.all()
+    all_series = series.objects.all().order_by('-series_air_date')
     serializer = GetAllSeriesSerializer(all_series, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def Episodes(request):
-    all_episodes = episode.objects.all()
+    all_episodes = episode.objects.all().order_by('-dou')
     serializer = GetAllEpisodesSerializer(all_episodes, many=True)
     return Response(serializer.data)
 
