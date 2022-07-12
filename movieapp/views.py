@@ -31,11 +31,11 @@ import requests
     
 
 def home(request):
-    get_movies = movie.objects.all()
-    get_series = series.objects.all()
-    get_anime = series.objects.filter(cat='anime')
-    get_premier = movie.objects.filter(premier=True)
-    get_premier_series = series.objects.filter(premier=True)
+    get_movies = movie.objects.all().order_by('-date_added')
+    get_series = series.objects.all().order_by('-series_air_date')
+    get_anime = series.objects.filter(cat='anime').order_by('-series_air_date')
+    get_premier = movie.objects.filter(premier=True).order_by('-date_added')
+    get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')
     context = {
         'movie': get_movies,
         'series': get_series,
@@ -50,8 +50,8 @@ def searchresult(request):
     if request.method == 'POST':
         search = request.POST.get('search')
        
-        filter_for_movies = movie.objects.filter(name__icontains=search)
-        filter_for_series = series.objects.filter(name__icontains=search)
+        filter_for_movies = movie.objects.filter(name__icontains=search).order_by('-date_added')
+        filter_for_series = series.objects.filter(name__icontains=search).order_by('-series-air-date')
 
 
         context = {
@@ -104,11 +104,11 @@ def detail(request, name):
 
 
     if mov.cat == 'anime':
-        filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre)[:2]
-        filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2)[:2]
+        filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre)[:2].order_by('-date_added')
+        filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2)[:2].order_by('-date_added')
 
-        filtered_movie3 = movie.objects.filter(cat='anime', genre1=movie_genre2)[:2]
-        filtered_movie4 = movie.objects.filter(cat='anime', genre2=movie_genre)[:2]
+        filtered_movie3 = movie.objects.filter(cat='anime', genre1=movie_genre2)[:2].order_by('-date_added')
+        filtered_movie4 = movie.objects.filter(cat='anime', genre2=movie_genre)[:2].order_by('-date_added')
 
         context = {
             'movie': get_movie,
@@ -124,11 +124,11 @@ def detail(request, name):
         return render(request, 'movieapp/details1.html', context)
 
     else:
-        filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre)[:2]
-        filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre)[:2]
+        filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre)[:2].order_by('-date_added')
+        filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre)[:2].order_by('-date_added')
 
-        filtered_movie3 = movie.objects.filter(cat='movie', genre1=movie_genre2)[:2]
-        filtered_movie4 = movie.objects.filter(cat='movie', genre2=movie_genre2)[:2]
+        filtered_movie3 = movie.objects.filter(cat='movie', genre1=movie_genre2)[:2].order_by('-date_added')
+        filtered_movie4 = movie.objects.filter(cat='movie', genre2=movie_genre2)[:2].order_by('-date_added')
         context = {
             'movie': get_movie,
             'al': all_movies,
@@ -144,7 +144,7 @@ def detail(request, name):
 
 @csrf_exempt
 def catalog_grid(request):
-    get_movies = movie.objects.all()
+    get_movies = movie.objects.all().order_by('-date_added')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
     get_year = year.objects.all()
@@ -162,12 +162,12 @@ def catalog_grid(request):
             if check_genre:
                 fin = Category.objects.get(cat=gen)
 
-            genre_1 = movie.objects.filter(genre1=fin)
-            genre_2 = movie.objects.filter(genre2=fin)
+            genre_1 = movie.objects.filter(genre1=fin).order_by('-date_added')
+            genre_2 = movie.objects.filter(genre2=fin).order_by('-date_added')
 
             if genre_1:
                 if yearr:
-                    return_result = movie.objects.filter(genre1=fin, year_range=yearr)
+                    return_result = movie.objects.filter(genre1=fin, year_range=yearr).order_by('-date_added')
                     
                     context = {
                         'movies': return_result,
@@ -177,7 +177,7 @@ def catalog_grid(request):
                     }
                     return render(request, 'movieapp/catalog1.html', context)
                 else:
-                    return_result = movie.objects.filter(genre1=fin)
+                    return_result = movie.objects.filter(genre1=fin).order_by('-date_added')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -188,7 +188,7 @@ def catalog_grid(request):
 
             elif genre_2:
                 if yearr:
-                    return_result = movie.objects.filter(genre2=fin, year_range=yearr)
+                    return_result = movie.objects.filter(genre2=fin, year_range=yearr).order_by('-date_added')
                     
                     context = {
                         'movies': return_result,
@@ -198,7 +198,7 @@ def catalog_grid(request):
                     }
                     return render(request, 'movieapp/catalog1.html', context)
                 else:
-                    return_result = movie.objects.filter(genre2=fin)
+                    return_result = movie.objects.filter(genre2=fin).order_by('-date_added')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -209,7 +209,7 @@ def catalog_grid(request):
                     return render(request, 'movieapp/catalog1.html', context)
               
         if yearr:
-            get_movies_by_year = movie.objects.filter(year_range=yearr)
+            get_movies_by_year = movie.objects.filter(year_range=yearr).order_by('-date_added')
             context = {
                 'movies': get_movies_by_year,
                 'category': cats,
@@ -228,7 +228,7 @@ def catalog_grid(request):
     return render(request, 'movieapp/catalog1.html', context)
 
 def catalog_list(request):
-    get_movies = movie.objects.all()
+    get_movies = movie.objects.all().order_by('-date_added')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
     get_year = year.objects.all()
@@ -246,12 +246,12 @@ def catalog_list(request):
             if check_genre:
                 fin = Category.objects.get(cat=gen)
 
-            genre_1 = movie.objects.filter(genre1=fin)
-            genre_2 = movie.objects.filter(genre2=fin)
+            genre_1 = movie.objects.filter(genre1=fin).order_by('-date_added')
+            genre_2 = movie.objects.filter(genre2=fin).order_by('-date_added')
 
             if genre_1:
                 if yearr:
-                    return_result = movie.objects.filter(genre1=fin, year_range=yearr)
+                    return_result = movie.objects.filter(genre1=fin, year_range=yearr).order_by('-date_added')
                     
                     context = {
                         'movies': return_result,
@@ -261,7 +261,7 @@ def catalog_list(request):
                     }
                     return render(request, 'movieapp/catalog2.html', context)
                 else:
-                    return_result = movie.objects.filter(genre1=fin)
+                    return_result = movie.objects.filter(genre1=fin).order_by('-date_added')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -272,7 +272,7 @@ def catalog_list(request):
 
             elif genre_2:
                 if yearr:
-                    return_result = movie.objects.filter(genre2=fin, year_range=yearr)
+                    return_result = movie.objects.filter(genre2=fin, year_range=yearr).order_by('-date_added')
                     
                     context = {
                         'movies': return_result,
@@ -282,7 +282,7 @@ def catalog_list(request):
                     }
                     return render(request, 'movieapp/catalog2.html', context)
                 else:
-                    return_result = movie.objects.filter(genre2=fin)
+                    return_result = movie.objects.filter(genre2=fin).order_by('-date_added')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -293,7 +293,7 @@ def catalog_list(request):
                     return render(request, 'movieapp/catalog2.html', context)
               
         if yearr:
-            get_movies_by_year = movie.objects.filter(year_range=yearr)
+            get_movies_by_year = movie.objects.filter(year_range=yearr).order_by('-date_added')
             context = {
                 'movies': get_movies_by_year,
                 'category': cats,
@@ -312,7 +312,7 @@ def catalog_list(request):
     return render(request, 'movieapp/catalog2.html', context)
 
 def Series(request):
-    get_movies = series.objects.all()
+    get_movies = series.objects.all().order_by('-series-air-date')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
     get_year = year.objects.all()
@@ -330,13 +330,13 @@ def Series(request):
             if check_genre:
                 fin = Category.objects.get(cat=gen)
 
-            genre_1 = series.objects.filter(genre1=fin)
-            genre_2 = series.objects.filter(genre2=fin)
+            genre_1 = series.objects.filter(genre1=fin).order_by('-series-air-date')
+            genre_2 = series.objects.filter(genre2=fin).order_by('-series-air-date')
 
             
             if genre_1:
                 if yearr:
-                    return_result = series.objects.filter(genre1=fin, year_range=yearr)
+                    return_result = series.objects.filter(genre1=fin, year_range=yearr).order_by('-series-air-date')
                     
                     context = {
                         'movies': return_result,
@@ -346,7 +346,7 @@ def Series(request):
                     }
                     return render(request, 'movieapp/catalog2.html', context)
                 else:
-                    return_result = series.objects.filter(genre1=fin)
+                    return_result = series.objects.filter(genre1=fin).order_by('-series-air-date')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -357,7 +357,7 @@ def Series(request):
 
             elif genre_2:
                 if yearr:
-                    return_result = series.objects.filter(genre2=fin, year_range=yearr)
+                    return_result = series.objects.filter(genre2=fin, year_range=yearr).order_by('-series-air-date')
                     
                     context = {
                         'movies': return_result,
@@ -367,7 +367,7 @@ def Series(request):
                     }
                     return render(request, 'movieapp/catalog2.html', context)
                 else:
-                    return_result = series.objects.filter(genre2=fin)
+                    return_result = series.objects.filter(genre2=fin).order_by('-series-air-date')
                     context = {
                         'movies': return_result,
                         'category': cats,
@@ -378,7 +378,7 @@ def Series(request):
                     return render(request, 'movieapp/catalog2.html', context)
 
         if yearr:
-            get_movies_by_year = series.objects.filter(year_range=yearr)
+            get_movies_by_year = series.objects.filter(year_range=yearr).order_by('-series-air-date')
             context = {
                 'movies': get_movies_by_year,
                 'category': cats,
@@ -693,11 +693,11 @@ def series_detail(request, name):
 
     if get_series.cat == 'series':
     
-        filtered_series = series.objects.filter(genre1=series_genre)[:2]
-        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2]
+        filtered_series = series.objects.filter(genre1=series_genre)[:2].order_by('-series-air-date')
+        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2].order_by('-series-air-date')
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2]
-        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2]
+        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2].order_by('-series-air-date')
+        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2].order_by('-series-air-date')
 
         context = {
         'series': get_series,
@@ -714,11 +714,11 @@ def series_detail(request, name):
         return render(request, 'movieapp/details2.html', context)
     
     else:
-        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2]
-        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2].order_by('-series-air-date')
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2].order_by('-series-air-date')
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2]
-        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2].order_by('-series-air-date')
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2].order_by('-series-air-date')
 
         context = {
         'series': get_series,
@@ -819,11 +819,11 @@ def series_detail_epi(request, name, seasons ,epi):
 
     if get_series.cat == 'series':
     
-        filtered_series = series.objects.filter(genre1=series_genre)[:2]
-        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2]
+        filtered_series = series.objects.filter(genre1=series_genre)[:2].order_by('-series-air-date')
+        filtered_series2 = series.objects.filter(genre2=series_genre2)[:2].order_by('-series-air-date')
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2]
-        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2]
+        filtered_series3 = series.objects.filter(genre1=series_genre2)[:2].order_by('-series-air-date')
+        filtered_series4 = series.objects.filter(genre2=series_genre2)[:2].order_by('-series-air-date')
 
         context = {
         'series': get_series,
@@ -843,11 +843,11 @@ def series_detail_epi(request, name, seasons ,epi):
         return render(request, 'movieapp/epi.html', context)
     
     else:
-        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2]
-        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
+        filtered_series = series.objects.filter(genre1=series_genre, cat='anime')[:2].order_by('-series-air-date')
+        filtered_series2 = series.objects.filter(genre2=series_genre2, cat='anime')[:2].order_by('-series-air-date')
 
-        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2]
-        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2]
+        filtered_series3 = series.objects.filter(genre1=series_genre2, cat='anime')[:2].order_by('-series-air-date')
+        filtered_series4 = series.objects.filter(genre2=series_genre2, cat='anime')[:2].order_by('-series-air-date')
 
         context = {
         'series': get_series,
