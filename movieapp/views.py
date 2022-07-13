@@ -34,12 +34,14 @@ def home(request):
     get_movies = movie.objects.all().order_by('-date_added')
     get_series = series.objects.all().order_by('-series_air_date')
     get_anime = series.objects.filter(cat='anime').order_by('-series_air_date')
+    get_anime_movie = movie.objects.filter(cat='anime').order_by('-date_added')
     get_premier = movie.objects.filter(premier=True).order_by('-date_added')
     get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')
     context = {
         'movie': get_movies,
         'series': get_series,
         'anime': get_anime,
+        'movie_anime': get_anime_movie,
         'premier': get_premier,
         'series_premier': get_premier_series,
     }
