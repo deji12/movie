@@ -71,10 +71,11 @@
 					<source src="{{first_epi.video}}" type="video/mp4" size="1080">
 
 					<!-- Caption files -->
+					{% if movie.sub_title_file %}
 					<track kind="captions" label="{{first_epi.sub_title_lang}}" srclang="{{first_epi.scrlang}}" src="{{first_epi.sub_title_file}}" default="">
 					<track kind="captions" label="{{first_epi.sub_title_lang2}}" srclang="{{first_epi.scrlang2}}" src="{{first_epi.sub_title_file2}}" default="">
 					<!-- <track kind="captions" label="Français" srclang="fr" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"> -->
-
+					{% endif %}
 					<!-- Fallback for browsers that don't support the <video> element -->
 					<a href="../../../static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4" download="">Download</a>
 				</track></track></video>
