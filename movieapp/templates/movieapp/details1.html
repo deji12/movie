@@ -75,8 +75,9 @@
 					<!-- <iframe width="640" height="360" frameborder="0" src="https://mega.nz/embed/eGBw1SYR#lsdtry5-COfRW3d4KHsb9UdNyUfRhhtfMDwpYSJZ2Fc" allowfullscreen ></iframe> -->
 
 					<!-- Caption files -->
-					<track kind="captions" label="English" srclang="en" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default="">
-					<track kind="captions" label="Français" srclang="fr" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+					<track kind="captions" label="{{movie.sub_title_lang}}" srclang="{{movie.scrlang}}" src="{{movie.sub_title_file.url}}" default="">
+					<track kind="captions" label="{{movie.sub_title_lang2}}" srclang="{{movie.scrlang2}}" src="{{movie.sub_title_file2.url}}" default="">
+					<!-- <track kind="captions" label="Français" srclang="fr" src="../../../static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"> -->
 
 					<!-- Fallback for browsers that don't support the <video> element -->
 					<a href="https://movieaw.s3.us-east-2.amazonaws.com/Call+of+Duty_2021-04-18-18-54-45.mp4" download="">Download</a>

@@ -37,6 +37,15 @@ class movie(models.Model):
     name = models.CharField(max_length=20000)
     info = models.TextField()
     video = models.CharField(max_length=10000, null=True, blank=True)
+
+    sub_title_lang = models.CharField(max_length=225, null=True, blank=True)
+    srclang = models.CharField(max_length=225, blank=True, null=True)
+    sub_title_file = models.FileField(upload_to='movie/subtitles', null=True, blank=True)
+
+    sub_title_lang2 = models.CharField(max_length=225, null=True, blank=True)
+    srclang2 = models.CharField(max_length=225, blank=True, null=True)
+    sub_title_file2 = models.FileField(upload_to='movie/subtitles', null=True, blank=True)
+    
     thumbnail = models.FileField(upload_to='thumb/')
     age = models.CharField(default=13, max_length=20)
     cat = models.CharField(default='cartoon', max_length=200)
@@ -123,6 +132,15 @@ class episode(models.Model):
     season_val = models.ForeignKey(season, related_name='episode', on_delete=models.CASCADE)   
     episode_num = models.IntegerField( default=1) 
     video = models.CharField(max_length=10000, null=True, blank=True)
+
+    sub_title_lang = models.CharField(max_length=225, null=True, blank=True)
+    srclang = models.CharField(max_length=225, blank=True, null=True)
+    sub_title_file = models.FileField(upload_to='movie/subtitles', null=True, blank=True)
+
+    sub_title_lang2 = models.CharField(max_length=225, null=True, blank=True)
+    srclang2 = models.CharField(max_length=225, blank=True, null=True)
+    sub_title_file2 = models.FileField(upload_to='movie/subtitles', null=True, blank=True)
+
     duration = models.CharField(max_length=100)
     dou = models.DateField(auto_now_add=True)
 
