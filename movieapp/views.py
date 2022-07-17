@@ -31,12 +31,12 @@ import requests
     
 
 def home(request):
-    get_movies = movie.objects.all().order_by('-date_added')
-    get_series = series.objects.all().order_by('-series_air_date')
-    get_anime = series.objects.filter(cat='anime').order_by('-series_air_date')
-    get_anime_movie = movie.objects.filter(cat='anime').order_by('-date_added')
-    get_premier = movie.objects.filter(premier=True).order_by('-date_added')
-    get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')
+    get_movies = movie.objects.all().order_by('-date_added')[:20]
+    get_series = series.objects.all().order_by('-series_air_date')[:20]
+    get_anime = series.objects.filter(cat='anime').order_by('-series_air_date')[:20]
+    get_anime_movie = movie.objects.filter(cat='anime').order_by('-date_added')[:20]
+    get_premier = movie.objects.filter(premier=True).order_by('-date_added')[:3]
+    get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')[:3]
     context = {
         'movie': get_movies,
         'series': get_series,
@@ -397,6 +397,93 @@ def Series(request):
         'year': get_year
     }
     return render(request, 'movieapp/series.html', context)
+
+
+def Anime(request):
+    get_movies = series.objects.filter(cat='anime').order_by('-series_air_date')
+    cats = Category.objects.all()
+    get_rate = rate.objects.all()
+    get_year = year.objects.all()
+
+    if request.method == 'POST':
+        gen = request.POST.get('check')
+        yearr = request.POST.get('year')
+
+        check_genre = Category.objects.filter(cat=gen)
+        fin = None
+
+          # FILTER FOR GENRE AND DATE
+        if gen:
+
+            if check_genre:
+                fin = Category.objects.get(cat=gen)
+
+            genre_1 = series.objects.filter(cat='anime', genre1=fin).order_by('-series_air_date')
+            genre_2 = series.objects.filter(cat='anime', genre2=fin).order_by('-series_air_date')
+
+            
+            if genre_1:
+                if yearr:
+                    return_result = series.objects.filter(cat='anime', genre1=fin, year_range=yearr).order_by('-series_air_date')
+                    
+                    context = {
+                        'movies': return_result,
+                        'category': cats,
+                        'rate': get_rate,
+                        'year': get_year
+                    }
+                    return render(request, 'movieapp/catalog2.html', context)
+                else:
+                    return_result = series.objects.filter(cat='anime',genre1=fin).order_by('-series_air_date')
+                    context = {
+                        'movies': return_result,
+                        'category': cats,
+                        'rate': get_rate,
+                        'year': get_year
+                    }
+                    return render(request, 'movieapp/catalog2.html', context)  
+
+            elif genre_2:
+                if yearr:
+                    return_result = series.objects.filter(cat='anime', genre2=fin, year_range=yearr).order_by('-series_air_date')
+                    
+                    context = {
+                        'movies': return_result,
+                        'category': cats,
+                        'rate': get_rate,
+                        'year': get_year
+                    }
+                    return render(request, 'movieapp/catalog2.html', context)
+                else:
+                    return_result = series.objects.filter(cat='anime', genre2=fin).order_by('-series_air_date')
+                    context = {
+                        'movies': return_result,
+                        'category': cats,
+                        'rate': get_rate,
+                        'year': get_year
+                    }
+                        # return redirect('cat1')   
+                    return render(request, 'movieapp/catalog2.html', context)
+
+        if yearr:
+            get_movies_by_year = series.objects.filter(cat='anime', year_range=yearr).order_by('-series_air_date')
+            context = {
+                'movies': get_movies_by_year,
+                'category': cats,
+                'rate': get_rate,
+                'year': get_year
+            }
+                        # return redirect('cat1')   
+            return render(request, 'movieapp/anime.html', context)
+
+    context = {
+        'movies': get_movies ,
+        'category': cats,
+        'rate': get_rate,
+        'year': get_year
+    }
+    return render(request, 'movieapp/anime.html', context)
+
 
 def pricing(request):
     return render(request, 'movieapp/pricing.html', {})

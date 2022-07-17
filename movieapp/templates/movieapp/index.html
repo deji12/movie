@@ -38,6 +38,7 @@
 					{% for i in movie %}
 						{% if i.draft != True %}
 						{% if i.premier != True %}
+						{% if i.new == True %}
 							<div class="card card--big">
 								<a href="{% url 'detail' i.name %}" class="card__cover">
 									<img src="{{i.thumbnail.url}}" alt="{{i.name}}">
@@ -54,6 +55,7 @@
 									<span class="card__rate"> {{i.rating}}</span>
 								</div>
 							</div>
+							{% endif %}
 						{% endif %}
 						{% endif %}
 					{% endfor %}
@@ -61,6 +63,7 @@
 					{% for i in series %}
 						{% if i.draft != True %}
 						{% if i.premier != True %}
+						{% if i.new == True %}
 							<div class="card card--big">
 								<a href="{% url 'series-detail' i.name %}" class="card__cover">
 									<img src="{{i.thumbnail.url}}" alt="{{i.name}}">
@@ -77,6 +80,7 @@
 									<span class="card__rate"> {{i.rating}}</span>
 								</div>
 							</div>
+						{% endif %}	
 						{% endif %}
 						{% endif %}
 					{% endfor %}
@@ -154,6 +158,7 @@
 					{% for i in movie %}
 						{% if i.draft != True %}
 						{% if i.premier != True %}
+						{% if i.new == True %}
 							<div class="col-6 col-sm-12 col-lg-6">
 								<div class="card card--list">
 									<a href="{% url 'detail' i.name %}" class="card__cover">
@@ -187,11 +192,13 @@
 							</div>
 						{% endif %}
 						{% endif %}
+						{% endif %}
 					{% endfor %}
 
 					{% for i in series %}
 						{% if i.draft != True %}
 						{% if i.premier != True %}
+						{% if i.new == True %}
 							<div class="col-6 col-sm-12 col-lg-6">
 								<div class="card card--list">
 									<a href="{% url 'series-detail' i.name %}" class="card__cover">
@@ -225,6 +232,7 @@
 							</div>
 						{% endif %}
 						{% endif %}
+						{% endif %}
 					{% endfor %}
 					<!-- end card -->
 
@@ -237,7 +245,7 @@
 					<!-- card -->
 					{% for i in movie %}
 						{% if i.draft != True %}
-						
+						{% if i.new == True %}
 							<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 								<div class="card">
 									<a href="{% url 'detail' i.name %}" class="card__cover">
@@ -257,6 +265,7 @@
 								</div>
 							</div>
 						{% endif %}
+						{% endif %}
 					{% endfor %}
 					<!-- end card -->
 
@@ -270,6 +279,7 @@
 					{% for j in series %}
 						{% if j.cat != 'anime' %}
 							{% if j.draft != True %}
+							{% if j.new == True %}
 								<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 									<div class="card">
 										<a href="{% url 'series-detail' j.name %}" class="card__cover">
@@ -288,6 +298,7 @@
 										</div>
 									</div>
 								</div>
+								{% endif %}
 							{% endif %}
 						{% endif %}
 					{% endfor %}
@@ -297,12 +308,13 @@
 			</div>
 
 
-			<!------------------------- CARTOONS ------------------------- -->
+			<!------------------------- ANIME ------------------------- -->
 			<div class="tab-pane fade" id="tab-4" role="tabpanel" aria-labelledby="4-tab">
 				<div class="row row--grid">
 					<!-- card -->
 					{% for k in anime %}
 						{% if k.draft != True %}
+						{% if k.new == True %}
 							<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 								<div class="card">
 									<a href="{% url 'series-detail' k.name %}" class="card__cover">
@@ -323,10 +335,12 @@
 								</div>
 							</div>
 						{% endif %}
+						{% endif %}
 					{% endfor %}
 
 					{% for k in movie_anime %}
 						{% if k.draft != True %}
+						{% if k.new == True %}
 							<div class="col-6 col-sm-4 col-lg-3 col-xl-2">
 								<div class="card">
 									<a href="{% url 'detail' k.name %}" class="card__cover">
@@ -346,6 +360,7 @@
 									</div>
 								</div>
 							</div>
+						{% endif %}
 						{% endif %}
 					{% endfor %}
 

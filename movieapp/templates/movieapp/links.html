@@ -35,3 +35,22 @@
 <script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184337/movie/static/js/photoswipe.min_a06oxp.js"></script>
 <script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184322/movie/static/js/photoswipe-ui-default.min_macxsd.js"></script>
 <script src="https://res.cloudinary.com/dxojb4izx/raw/upload/v1650184316/movie/static/js/main_bnj6rj.js"></script>
+
+<body oncontextmenu="return false;"></body>
+
+<script>
+	document.onkeydown = function(e) {
+	if(event.keyCode == 123) {
+		return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+		return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+		return false;
+	}
+	if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+		return false;
+	}
+	}
+</script>

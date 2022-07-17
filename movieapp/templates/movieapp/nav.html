@@ -94,15 +94,15 @@
 								<a href="{% url 'series' %}" class="header__nav-link">Series</a>
 							</li>
 
+							<li class="header__nav-item">
+								<a href="{% url 'anime' %}" class="header__nav-link">Anime</a>
+							</li>
+
 							{% if request.user.is_authenticated %}
 								<li class="header__nav-item">
 									<a href="{% url 'profile' %}" class="header__nav-link">Profile</a>
 								</li>
 							{% endif %}
-
-							<li class="header__nav-item">
-								<a href="{% url 'faq' %}" class="header__nav-link">Help</a>
-							</li>
 
 							<!-- dropdown -->
 							<li class="dropdown header__nav-item">
@@ -111,6 +111,7 @@
 								</a>
 
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuMore">
+									<li><a href="{% url 'faq' %}">Help</a></li>
 									<li><a href="{% url 'about' %}">About</a></li>
 									<!-- <li><a href="{% url 'profile' %}">Profile</a></li> -->
 									<!-- <li><a href="{% url 'login' %}">Sign In</a></li>
@@ -194,4 +195,24 @@
 		<div class="item home__cover" data-bg="https://res.cloudinary.com/dxojb4izx/image/upload/v1650184330/movie/static/img/home/home__bg_e4ylfv.jpg"></div>
 	</div> -->
 	<!-- end home bg -->
+
 </header>
+
+<body oncontextmenu="return false;"></body>
+
+<script>
+	document.onkeydown = function(e) {
+	if(event.keyCode == 123) {
+		return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+		return false;
+	}
+	if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+		return false;
+	}
+	if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+		return false;
+	}
+	}
+</script>

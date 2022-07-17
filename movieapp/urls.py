@@ -24,6 +24,7 @@ urlpatterns = [
     path('auth/reset-password/<str:name>/', views.PasswordResedtView, name='reset_view'),
     path('auth/password-reset-sent/', views.password_reset_sent, name='reset-sent'),
     path('series/', views.Series, name='series'),
+    path('anime/', views.Anime, name='anime'),
     path('search-result/', views.searchresult, name='search'),
 ]
 
