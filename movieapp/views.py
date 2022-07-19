@@ -835,8 +835,8 @@ def series_detail_epi(request, name, seasons ,epi):
 
     get_series_for_episode = series.objects.get(name=name)
 
-
-    part_se = episode.objects.get(series_name=get_series_for_episode, title=epi)
+    season_for_episode = season.objects.get(season_num=seasons)
+    part_se = episode.objects.get(series_name=get_series_for_episode, title=epi, season_val=season_for_episode)
     epis = episode.objects.get(title=epi)
 
     if request.method == 'POST':
