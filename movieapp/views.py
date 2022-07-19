@@ -840,7 +840,7 @@ def series_detail_epi(request, name, seasons ,epi):
 
     season_for_episode = season.objects.get(series_name=get_series, season_num=season_number)
     part_se = episode.objects.get(series_name=get_series_for_episode, title=epi, season_val=season_for_episode)
-    epis = episode.objects.get(title=epi)
+    epis = episode.objects.get(series_name=get_series_for_episode, title=epi, season_val=season_for_episode)
 
     if request.method == 'POST':
         if request.user.is_authenticated:
