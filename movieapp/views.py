@@ -838,7 +838,7 @@ def series_detail_epi(request, name, seasons ,epi):
     split_season = seasons.split("|")[1]
     season_number = split_season.split(" ")[2]
 
-    season_for_episode = season.objects.get(season_num=season_number)
+    season_for_episode = season.objects.get(series_name=get_series, season_num=season_number)
     part_se = episode.objects.get(series_name=get_series_for_episode, title=epi, season_val=season_for_episode)
     epis = episode.objects.get(title=epi)
 
