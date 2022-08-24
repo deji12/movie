@@ -31,7 +31,7 @@ import requests
     
 
 def home(request):
-    get_movies = movie.objects.all().order_by('-date_added')[:20]
+    get_movies = movie.objects.filter(new=True).order_by('-date_added')[:20]
     get_series = series.objects.all().order_by('-series_air_date')[:20]
     get_anime = series.objects.filter(cat='anime').order_by('-series_air_date')[:20]
     get_anime_movie = movie.objects.filter(cat='anime').order_by('-date_added')[:20]
