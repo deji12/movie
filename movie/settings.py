@@ -150,7 +150,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'adesolaayodeji53@gmail.com'
-EMAIL_HOST_PASSWORD = 'qyikjtbvpfbhtqyj'
+EMAIL_HOST_PASSWORD = 'xhtnvghrbhtatmmh'
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dxojb4izx',
