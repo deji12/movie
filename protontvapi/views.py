@@ -55,12 +55,18 @@ def Genres(request):
 
 @api_view(['GET'])
 def GetMovie(request, name):
-    mov = movie.objects.get(name=name)
-    serializer = GetAllMoviesSerializer(mov, many=False)
-    return Response(serializer.data)
+    try:
+        mov = movie.objects.get(name=name)
+        serializer = GetAllMoviesSerializer(mov, many=False)
+        return Response(serializer.data)
+    except:
+        return Response({'Error': f'Movie {name} does not exist in database'})
 
 @api_view(['GET'])
 def GetSeries(request, name):
-    serie = series.objects.get(name=name)
-    serializer = GetAllSeriesSerializer(serie, many=False)
-    return Response(serializer.data)
+    try:
+        serie = series.objects.get(name=name)
+        serializer = GetAllSeriesSerializer(serie, many=False)
+        return Response(serializer.data)
+    except:
+        return Response({'Error': f'Series {name}, does not exist in database'})
