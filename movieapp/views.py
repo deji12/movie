@@ -31,12 +31,17 @@ import requests
     
 
 def home(request):
-    get_movies = movie.objects.filter(new=True).order_by('-date_added')[:20]
-    get_series = series.objects.filter(new=True).order_by('-series_air_date')[:20]
-    get_anime = series.objects.filter(cat='anime', new=True).order_by('-series_air_date')[:20]
-    get_anime_movie = movie.objects.filter(cat='anime', new=True).order_by('-date_added')[:20]
-    get_premier = movie.objects.filter(premier=True).order_by('-date_added')[:3]
-    get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')[:3]
+    # making querries to reteieve and display movies in frontend
+    get_movies = movie.objects.filter(new=True).order_by('-date_added')[:20] # getting 20 of the newest movies in the database
+    get_series = series.objects.filter(new=True).order_by('-series_air_date')[:20] # getting 20 of the newest series in the database
+    get_anime = series.objects.filter(cat='anime', new=True).order_by('-series_air_date')[:20] # getting 20 of the newest anime's in the database
+    get_anime_movie = movie.objects.filter(cat='anime', new=True).order_by('-date_added')[:20] # getting 20 of the newest anime movies in the database
+    get_premier = movie.objects.filter(premier=True).order_by('-date_added')[:3] # getting 3 movies about to premier
+    get_premier_series = series.objects.filter(premier=True).order_by('-series_air_date')[:3] # getting 3 series about to premier
+    
+    '''
+        Returning querries to the frontend for display
+    '''
     context = {
         'movie': get_movies,
         'series': get_series,
@@ -48,10 +53,17 @@ def home(request):
     return render(request, 'movieapp/index.html', context)
 
 def searchresult(request):
+    
+    '''
+        This view is responsible for 
+        handling user searches
+    '''
 
     if request.method == 'POST':
+        # check if user submits the movie-search form
         search = request.POST.get('search')
        
+        # filtering the database to find any series or movie that matches user's search
         filter_for_movies = movie.objects.filter(name__icontains=search).order_by('-date_added')
         filter_for_series = series.objects.filter(name__icontains=search).order_by('-series_air_date')
 
@@ -65,47 +77,61 @@ def searchresult(request):
     return render(request, 'movieapp/search-result.html')
 
 def detail(request, name):
+    
+    '''
+        This view is responsible for 
+        displaying the detail page of a 
+        movie as well as the contents of 
+        that movie.
+    '''
+    
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            get_profile = Profile.objects.get(user=request.user)
+        # check if user submits a comment or review
+        if request.user.is_authenticated: # check if user is logged in
+            get_profile = Profile.objects.get(user=request.user) # getting user profile
             title = request.POST.get('title')
             review = request.POST.get('review')
             text = request.POST.get('body')
             rate = request.POST.get('rate')
 
-            if text:
+            if text: # means user filled the comment form
+                # creating a new comment and saving it
                 new_comment = comment(name=request.user, body=text)
                 new_comment.movie = movie.objects.get(name=name)
                 new_comment.save()
-                get_profile.comments +=1
+                get_profile.comments +=1 # incrementing the number of comments the user has on this website by 1
                 get_profile.save()
                 return redirect('detail', name=name)
-            if title:
+            if title: # means user filled review form
+                # creating a new review object and saving it
                 new_review = reviewss(name=request.user, title=title, body=review, rate=rate)
                 new_review.movie = movie.objects.get(name=name)
-                get_profile.reviews +=1
+                get_profile.reviews +=1  # incrementing the number of reviews the user has on this website by 1
                 get_profile.save()
                 new_review.save()
                 return redirect('detail', name=name)
-        else:
+        else: # return an error prompting that user has to be logged in to comment or give a review
             messages.error(request, 'Please signin to post a comment or review')
             return redirect('detail', name=name)    
 
     mov = movie.objects.get(name=name)
-    mov.clicks +=1
+    mov.clicks +=1 # increment thw nmber of clicks by 1
     mov.save()
 
-    pics = photos.objects.filter(movie_name=mov)
-    all_coms = comment.objects.filter(movie=mov)
-    all_reviews = reviewss.objects.filter(movie=mov)
-    get_movie = movie.objects.get(name=name)
+    pics = photos.objects.filter(movie_name=mov) # get pictures associated with movie
+    all_coms = comment.objects.filter(movie=mov) # get all comments associated with movie
+    all_reviews = reviewss.objects.filter(movie=mov) # get all series associated with movie
+    get_movie = movie.objects.get(name=name) # get movie object
 
     all_movies = movie.objects.all()
     movie_genre = mov.genre1
     movie_genre2 = mov.genre2
 
-
-    if mov.cat == 'anime':
+    '''
+        Here, we search for other movies that have similar
+        categories with the selected movie in detail page
+    '''
+    if mov.cat == 'anime': # check if movie category is anime
         filtered_movie = movie.objects.filter(cat='anime', genre1=movie_genre).order_by('-date_added')[:2]
         filtered_movie2 = movie.objects.filter(cat='anime', genre2=movie_genre2).order_by('-date_added')[:2]
 
@@ -125,7 +151,7 @@ def detail(request, name):
         }
         return render(request, 'movieapp/details1.html', context)
 
-    else:
+    else: # if movie is not anime
         filtered_movie = movie.objects.filter(cat='movie', genre1=movie_genre).order_by('-date_added')[:2]
         filtered_movie2 = movie.objects.filter(cat='movie', genre2=movie_genre).order_by('-date_added')[:2]
 
@@ -146,16 +172,26 @@ def detail(request, name):
 
 @csrf_exempt
 def catalog_grid(request):
+    
+    '''
+        This view is responsible for
+        displaying all movies in a grid form
+    '''
+    
     get_movies = movie.objects.all().order_by('-date_added')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
     get_year = year.objects.all()
 
     if request.method == 'POST':
+        '''
+                In this post request, the user 
+                can filter for movies by year and genre 
+        '''
         gen = request.POST.get('check')
         yearr = request.POST.get('year')
 
-        check_genre = Category.objects.filter(cat=gen)
+        check_genre = Category.objects.filter(cat=gen) 
         fin = None
 
         # FILTER FOR GENRE AND DATE
@@ -230,6 +266,12 @@ def catalog_grid(request):
     return render(request, 'movieapp/catalog1.html', context)
 
 def catalog_list(request):
+    
+     '''
+        This view is responsible for
+        displaying all movies in a list form
+    '''
+    
     get_movies = movie.objects.all().order_by('-date_added')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
@@ -314,6 +356,11 @@ def catalog_list(request):
     return render(request, 'movieapp/catalog2.html', context)
 
 def Series(request):
+    '''
+        This view is responsible for displaying the 
+        detail page of a series along with the details of that
+        series (seasons, episodes, comments, reviews, etc)
+    '''
     get_movies = series.objects.filter(cat='series').order_by('-series_air_date')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
@@ -400,6 +447,13 @@ def Series(request):
 
 
 def Anime(request):
+    
+     '''
+        This view is responsible for displaying the 
+        detail page of an anime along with the details of that
+        series (seasons, episodes, comments, reviews, etc)
+    '''
+        
     get_movies = series.objects.filter(cat='anime').order_by('-series_air_date')
     cats = Category.objects.all()
     get_rate = rate.objects.all()
